@@ -8,6 +8,8 @@ public enum Element
     NITROGEN("N", 3.25, 0.17),
     OXYGEN  ("O", 2.96, 0.21),
     SULFUR  ("S", 3.60, 0.355);
+    FLUORINE ("F", 2.94, 0.061);
+    PHOSPHORUS ("P", 3.72, 0.20);
 
     /** the atomic symbol for this element */
     public String symbol;
@@ -43,6 +45,10 @@ public enum Element
             return OXYGEN;
         else if ( symbol.equals("S") || symbol.equals("SH") || symbol.equals("SS") )
             return SULFUR;
+        else if ( symbol.equals("P") )
+            return PHOSPHORUS;
+        else if ( symbol.equals("F") )
+            return FLUORINE;
         else
             throw new IllegalArgumentException("Unrecognized atom symbol (" + symbol + ")!");
     }
