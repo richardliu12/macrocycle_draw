@@ -37,54 +37,6 @@ public class TinkerMinimizationJob implements WorkUnit, Serializable, Immutable
 	    tinkerKeyFile = new TinkerKeyFile(keywords);
     }
     
-    /*
-    /**
-     * Creates a job for minimizing a peptide pose based on a template peptide
-     * @param templatePeptide the template peptide in the non-close contact form
-     * @param pose the positions of the atoms in a specific pose (either ground or transition state)
-     * @param extraKeywords any extra keywords that are desired (newlines required)
-     */
-     /*
-     public TinkerMinimizationJob(Peptide templatePeptide, List<Vector3D> pose, String extraKeywords)
-     {
-         if (templatePeptide.contents.size() != pose.size())
-             throw new IllegalArgumentException("Size of template peptide's contents must match the pose size");
-        
-        //creates String to write
-        String outputString = "";
-        //write number of atoms and molecule name
-        outputString = templatePeptide.contents.size() + " " + templatePeptide.name + "\n";
-
-        //write atom list and connections
-        for (int currentAtomNumber = 1; currentAtomNumber <= templatePeptide.contents.size(); currentAtomNumber++)
-            {
-                Atom currentAtom = templatePeptide.contents.get(currentAtomNumber);
-                Set<DefaultWeightedEdge> bonds = templatePeptide.connectivity.edgesOf(currentAtom);
-                outputString = outputString + String.format("%3d %2s %12.8f %12.8f %12.8f %6d", currentAtomNumber,
-                                                            currentAtom.element.symbol,  pose.get(currentAtomNumber).getX(),
-                                                            pose.get(currentAtomNumber).position.getY(), pose.get(currentAtomNumber).getZ(),
-                                                            currentAtom.tinkerAtomType);
-
-                for (DefaultWeightedEdge e : bonds)
-                    {
-                        int edgeTarget = contents.indexOf(templatePeptide.connectivity.getEdgeTarget(e)) + 1;
-                        int edgeSource = contents.indexOf(templatePeptide.connectivity.getEdgeSource(e)) + 1;
-                        int edgeTargetToWrite = edgeTarget;
-                        //change to edgeSource if edgeTarget is simply the current atom (edges have no particular ordering)
-                        if (edgeTarget == currentAtomNumber)
-                            edgeTargetToWrite = edgeSource;
-                        outputString = outputString+String.format("%6d",edgeTargetToWrite);
-                    }
-                outputString = outputString + "\n";
-            }
-       
-        
-        tinkerXYZInputFile = new TinkerXYZInputFile(outputString);
-        String keywords = Settings.TINKER_MINIMIZATION_STANDARD_KEYWORDS + extraKeywords;
-	    tinkerKeyFile = new TinkerKeyFile(keywords);
-    }
-    */
-
     /** will run with standard keywords only */
     public TinkerMinimizationJob(Molecule molecule)
     {
@@ -181,7 +133,7 @@ public class TinkerMinimizationJob implements WorkUnit, Serializable, Immutable
                         while ( true )
                             {
                                 // check if the process has terminated
-                                GeneralThreadService.wait(500);
+                                Thread.sleep(500);
                                
                                 /*try
                                     {

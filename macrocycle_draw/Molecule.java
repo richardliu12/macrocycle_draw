@@ -1527,7 +1527,7 @@ public class Molecule implements Immutable, Serializable
     /** for testing */
     public static void main(String[] args)
     {
-        TinkerMultipleXYZOutputFile file = new TinkerMultipleXYZOutputFile("g09_scans/combined.xyz");
+        /*TinkerMultipleXYZOutputFile file = new TinkerMultipleXYZOutputFile("g09_scans/combined.xyz");
         List<Molecule> molecules = new LinkedList<Molecule>(file.scanPoints.keySet());
         Molecule m1 = molecules.get(0);
         Molecule m2 = molecules.get(1);
@@ -1536,5 +1536,6 @@ public class Molecule implements Immutable, Serializable
             atomNumbers.add(i+1);
         System.out.println(calculateRMSD(m1,m1,atomNumbers));
         System.out.println(calculateRMSD(m1,m2,atomNumbers));
+        */
     }
 }
