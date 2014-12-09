@@ -483,7 +483,7 @@ public class TinkerMinimizationJob implements WorkUnit, Serializable, Immutable
     /** For testing. */
     public static void main(String[] args)
     {
-        TinkerMinimizationLogFile file = new TinkerMinimizationLogFile("tinker_minimization_jobs/tinker_minimization_job_0000000000.out");
+        TinkerMinimizationLogFile file = new TinkerMinimizationLogFile("test.out");
         System.out.println(file.energy);
     }
 }

@@ -7,8 +7,8 @@ public enum Element
     HYDROGEN("H", 2.50, 0.03),
     NITROGEN("N", 3.25, 0.17),
     OXYGEN  ("O", 2.96, 0.21),
-    SULFUR  ("S", 3.60, 0.355);
-    FLUORINE ("F", 2.94, 0.061);
+    SULFUR  ("S", 3.60, 0.355),
+    FLUORINE ("F", 2.94, 0.061),
     PHOSPHORUS ("P", 3.72, 0.20);
 
     /** the atomic symbol for this element */
