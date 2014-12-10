@@ -1,0 +1,17 @@
+#!/bin/bash 
+
+#SBATCH -N 1
+
+#SBATCH -n 24 #Number of cores 
+
+#SBATCH -p jacobsen #Partition to submit to 
+
+#SBATCH --mem=10 #Memory per node in MB (see also --mem-per-cpu)
+
+#SBATCH -w enj01
+
+#SBATCH -t 100000
+
+while true
+    do sleep 10000
+done

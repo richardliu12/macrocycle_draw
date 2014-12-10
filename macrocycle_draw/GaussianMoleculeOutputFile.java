@@ -64,6 +64,7 @@ public class GaussianMoleculeOutputFile extends OutputFileFormat
     /** for testing */
     public static void main(String[] args) 
     {
-
+        GaussianMoleculeOutputFile test = new GaussianMoleculeOutputFile("test.out", 1);
+        System.out.println(test.toString());
     }
 } // end of class GaussianMoleculeOutputFile
