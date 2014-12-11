@@ -1,8 +1,0 @@
-#
-at    CON  CON   CON    pattern                                 comment
-int   int  int   int    char                                    char
-#
-1      1    2     3     [a]-[a]@[a]                             # CA-CA-CA on two different rings 
-1      1    2     3     [r#6X3]-;!@[r;#6X3]@[*]                 # CM-CM=CM on two different rings 
-3      1    2     3     [r3]1@;-,=[r3]@;-,=[r3]-,=1            # bend in three memebered ring
-4      1    2     3     [r4]1@;-,=[r4]@;-,=[r4]@;-,=[r4]-,=1   # bend in four memebered ring

@@ -4,6 +4,9 @@
 *.*#
 *.*~
 *.swp
+.mae
+.mol2
+.maegz
 temp.txt
 gnuplot/*.csv
 dpd.csv
@@ -68,3 +71,4 @@ g09_scans/rigidScan/*.txt
 g09_scans/rigidScan/waiting/*
 reference_energies/*.txt
 amino_acids/*.pdb
+opls
