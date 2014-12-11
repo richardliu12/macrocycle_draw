@@ -4,9 +4,10 @@
 *.*#
 *.*~
 *.swp
-.mae
-.mol2
-.maegz
+*.mae
+*.mol2
+*.maegz
+*.log
 temp.txt
 gnuplot/*.csv
 dpd.csv
