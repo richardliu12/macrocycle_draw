@@ -178,6 +178,7 @@ public class GJFfragment extends OutputFileFormat implements Immutable
         public static void main(String[] args)
         {
             GJFfragment gjf = new GJFfragment("test.gjf");
-            System.out.println(gjf.molecule + "\n Left: " + gjf.leftConnect + " Right: " + gjf.rightConnect + " (thio)Urea: " + gjf.ureaCarbon + " \n" + gjf.fragmentType);
-        }
+            Fragment frag = Fragment.createFragment(gjf);
+            System.out.println(frag);
+}
 }
