@@ -3,9 +3,9 @@
 #p g2 geom=connectivity
 
 @left_connect@3
-@right_connect@1
+@right_connect@2
 @urea_carbon@1
-@fragment_type@urea
+@fragment_type@thiourea
 
 0 1
  C                  0.00000000    0.00000000   -1.10961500

@@ -10,7 +10,8 @@ public enum Element
     SULFUR  ("S", 3.60, 0.355),
     FLUORINE ("F", 2.94, 0.061),
     CHLORINE ("Cl", 3.40, 0.300), 
-    PHOSPHORUS ("P", 3.72, 0.20);
+    PHOSPHORUS ("P", 3.72, 0.20),
+    DUMMY ("Q", 100, 100);
 
     /** the atomic symbol for this element */
     public String symbol;
@@ -52,6 +53,8 @@ public enum Element
             return FLUORINE;
         else if ( symbol.equals("Cl") )
             return CHLORINE;
+        else if ( symbol.equals("Q") )
+            return DUMMY;
         else
             throw new IllegalArgumentException("Unrecognized atom symbol (" + symbol + ")!");
     }

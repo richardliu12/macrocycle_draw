@@ -15,16 +15,16 @@ public class GJFfragment extends OutputFileFormat implements Immutable
     public final Molecule molecule;
     
     /** The left connecting Atom of the fragment. */
-    //public final Atom leftConnect;
+    public final Atom leftConnect;
 
     /** The right connecting Atom of the fragment. */
-    //public final Atom rightConnect;
+    public final Atom rightConnect;
 
     /** The Atom that is the (thio)urea carbon, if any in this fragment. */
-    //public final Atom ureaCarbon;
+    public final Atom ureaCarbon;
 
     /** The FragmentType of this fragment. */
-    //public FragmentType fragmentType;
+    public FragmentType fragmentType;
 
     /**
      * Reads the geometry and connectivity, as well as metadata.
@@ -35,7 +35,7 @@ public class GJFfragment extends OutputFileFormat implements Immutable
 	    super(filename);
 	
         // read geometry
-	    String name = "";
+	    String name = filename.split("\\.")[0];
         List<Atom> contents = new ArrayList<>();
 	    SimpleWeightedGraph<Atom,DefaultWeightedEdge> connectivity = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
         int blanks = 0;
@@ -60,7 +60,7 @@ public class GJFfragment extends OutputFileFormat implements Immutable
                 else
                     lastBlank = false;
 
-                // figure out if we are in the geometry block
+                // read the metadata 
                 if ( blanks == 1 )
                     {   
                         for (String s : line)
@@ -72,12 +72,39 @@ public class GJFfragment extends OutputFileFormat implements Immutable
                                 else
                                     leftConnectAtomNumber = Integer.parseInt(s.split("@")[2]);
                             }
-                            else if ( s.split("@")[1].toLowerCase().equals("right_connect"))
+                            else if ( s.split("@")[1].toLowerCase().equals("right_connect") )
                             {
                                 if ( s.split("@").length != 3 )
                                     throw new IllegalArgumentException("improper atom number specification for right_connect in " + filename + ":\n" + line.toString());
                                 else
                                     rightConnectAtomNumber = Integer.parseInt(s.split("@")[2]);
+                            }
+                            else if ( s.split("@")[1].toLowerCase().equals("urea_carbon") )
+                            {
+                                if ( s.split("@").length != 3 )
+                                    throw new IllegalArgumentException("improper atom number specification for urea_carbon in " + filename + ":\n" + line.toString());
+                                else
+                                    ureaCarbonAtomNumber = Integer.parseInt(s.split("@")[2]);
+                            }
+                            else if ( s.split("@")[1].toLowerCase().equals("fragment_type") )
+                            {
+                                if ( s.split("@").length != 3 )
+                                    throw new IllegalArgumentException("improper fragment_type in " + filename + ":\n" + line.toString());
+                                else switch( s.split("@")[2] ){
+                                    case "urea": fragmentType = FragmentType.UREA;
+                                        break;
+                                    case "thiourea": fragmentType = FragmentType.THIOUREA;
+                                        break;
+                                    case "linker_1": fragmentType = FragmentType.LINKER_1;
+                                        break;
+                                    case "linker_2": fragmentType = FragmentType.LINKER_2;
+                                        break;
+                                    case "linker_3": fragmentType = FragmentType.LINKER_3;
+                                        break;
+                                    case "linker_4": fragmentType = FragmentType.LINKER_4;
+                                        break;
+                                    default: throw new IllegalArgumentException("improper fragment_type in " + filename + ":\n" + line.toString());
+                                }
                             }
                         }
                         continue;
@@ -136,8 +163,14 @@ public class GJFfragment extends OutputFileFormat implements Immutable
 
             }
 
-        // create the molecule
+        // create the molecule, label atoms with metadata
 	    molecule = new Molecule(name, contents, connectivity);
+        leftConnect = molecule.getAtom(leftConnectAtomNumber);
+        rightConnect = molecule.getAtom(rightConnectAtomNumber);
+        if (ureaCarbonAtomNumber != 0)
+            ureaCarbon = molecule.getAtom(ureaCarbonAtomNumber);
+        else
+            ureaCarbon = new Atom("Q", new Vector3D(0,0,0), -1);
     }
         /**
         * For testing.
@@ -145,5 +178,6 @@ public class GJFfragment extends OutputFileFormat implements Immutable
         public static void main(String[] args)
         {
             GJFfragment gjf = new GJFfragment("test.gjf");
+            System.out.println(gjf.molecule + "\n Left: " + gjf.leftConnect + " Right: " + gjf.rightConnect + " (thio)Urea: " + gjf.ureaCarbon + " \n" + gjf.fragmentType);
         }
 }
