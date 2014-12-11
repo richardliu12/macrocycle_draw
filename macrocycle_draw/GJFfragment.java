@@ -7,18 +7,30 @@ import org.jgrapht.alg.*;
 import com.google.common.collect.*;
 
 /**
- * Represents a Gaussian input file.
- */
-public class GJFfile extends OutputFileFormat implements Immutable
+ * Represents a Gaussian input file with metadata to describe a fragment.
+  */
+public class GJFfragment extends OutputFileFormat implements Immutable
 {
     /** The Molecule representation of this file. */
     public final Molecule molecule;
     
+    /** The left connecting Atom of the fragment. */
+    //public final Atom leftConnect;
+
+    /** The right connecting Atom of the fragment. */
+    //public final Atom rightConnect;
+
+    /** The Atom that is the (thio)urea carbon, if any in this fragment. */
+    //public final Atom ureaCarbon;
+
+    /** The FragmentType of this fragment. */
+    //public FragmentType fragmentType;
+
     /**
-     * Reads the geometry and connectivity.
+     * Reads the geometry and connectivity, as well as metadata.
      * @param filename the location of the gjf file
     */
-    public GJFfile(String filename)
+    public GJFfragment(String filename)
     {
 	    super(filename);
 	
@@ -29,6 +41,10 @@ public class GJFfile extends OutputFileFormat implements Immutable
         int blanks = 0;
         boolean lastBlank = false;
         boolean inGeometryBlock = false;
+        int leftConnectAtomNumber = 0;
+        int rightConnectAtomNumber = 0;
+        int ureaCarbonAtomNumber = 0;
+
         for (List<String> line : fileContents)
             {
                 // keep track of how many blanks we have seen
@@ -44,11 +60,26 @@ public class GJFfile extends OutputFileFormat implements Immutable
                 else
                     lastBlank = false;
 
-                // reads metadata, then proceeds into geometry block
+                // figure out if we are in the geometry block
                 if ( blanks == 1 )
-                    {
+                    {   
                         for (String s : line)
-                            name += s + " ";
+                        {   
+                            if ( s.split("@")[1].toLowerCase().equals("left_connect") )
+                            {
+                                if ( s.split("@").length != 3 )
+                                    throw new IllegalArgumentException("improper atom number specification for left_connect in " + filename + ":\n" + line.toString());
+                                else
+                                    leftConnectAtomNumber = Integer.parseInt(s.split("@")[2]);
+                            }
+                            else if ( s.split("@")[1].toLowerCase().equals("right_connect"))
+                            {
+                                if ( s.split("@").length != 3 )
+                                    throw new IllegalArgumentException("improper atom number specification for right_connect in " + filename + ":\n" + line.toString());
+                                else
+                                    rightConnectAtomNumber = Integer.parseInt(s.split("@")[2]);
+                            }
+                        }
                         continue;
                     }
                 else if ( blanks != 2 )
@@ -70,8 +101,6 @@ public class GJFfile extends OutputFileFormat implements Immutable
                 contents.add(newAtom);
                 connectivity.addVertex(newAtom);
             }
-        
-        name = name.substring(0, name.length()-1);
 
         // read connectivity
         blanks = 0;
@@ -110,10 +139,11 @@ public class GJFfile extends OutputFileFormat implements Immutable
         // create the molecule
 	    molecule = new Molecule(name, contents, connectivity);
     }
-    
-    /** for testing */
-    public static void main(String args[])
-    {
-        GJFfragment gjf = new GJFfragment("test.gjf");
-    }
+        /**
+        * For testing.
+        */
+        public static void main(String[] args)
+        {
+            GJFfragment gjf = new GJFfragment("test.gjf");
+        }
 }

@@ -1517,8 +1517,10 @@ public class Molecule implements Immutable, Serializable
                 toAtom = connectivity.getEdgeTarget(e);
                 toAtomNumber = getAtomNumber(toAtom);
                 bondOrder = connectivity.getEdgeWeight(e);
-
-                bondString = String.format("%6s%5s%5s %s\n", count, fromAtomNumber, toAtomNumber, Math.round(bondOrder));
+                if ( bondOrder == 1.5 ) 
+                    bondString = String.format("%6s%5s%5s %s\n", count, fromAtomNumber, toAtomNumber, "Ar");
+                else
+                    bondString = String.format("%6s%5s%5s %s\n", count, fromAtomNumber, toAtomNumber, Math.round(bondOrder));
                 returnString = returnString + bondString;
             }
         return returnString;

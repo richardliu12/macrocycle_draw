@@ -1,0 +1,9 @@
+#
+bt    CON  CON   pattern                     USE     comment
+int   int  int   char                        int     char
+#
+1      1    2    [#6X3;^sCM]-[#6X3;^sCM]     0       # two CM-CM CA-CA
+1      1    2    [#7X2+0]=[#6X3]             0       # N=C double bonded
+1      1    2    [a]-[a]                     0       # two CM-NA CA-NA
+3      1    2    [r3]@[r3]                   0       # ring bond of a three membered ring 
+4      1    2    [r4]@[r4]                   0       # ring bond of a four membered ring

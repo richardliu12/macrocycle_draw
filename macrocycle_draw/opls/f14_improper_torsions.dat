@@ -1,0 +1,34 @@
+#
+# Define which atoms obtain an improper torsion
+#
+# at this point of the typing task we know all bondorders and
+# formal charges. Aromaticity is exactly defined
+#
+# The ring properties defined in the patterns below
+# will be compared to the ones from the SSSR rings.
+#
+# indx needs to be in sequence
+# DEF indicates the atom serial number in the SMARTS pattern 
+#
+# Set value in nosc (no scale) column to 1 to disable force constant 
+# scaling (disable planarity enforcement) at improper torsion center 
+#
+ indx    v2    DEF  DEF  DEF  DEF  nosc  pattern                             comment
+  int  double  int  int  int  int  int   char                                char
+#
+  1     30.0    1    2    3    4    0    [C;X3;!R](=[C;!R])(-[*])-[*]        # C=  double bonded
+  2     21.0    1    2    4    5    0    [C;X3;R0](=[#7]-[O])(-[*])-[*]      # C= in oxime
+  3     21.0    1    2    3    4    0    [N;X3](-[O-])(=O)-[*]               # nitro
+  4     21.0    1    2    3    4    0    [C;X3](=[O,S,N])([*])-[*]           # carbonyl and analogs
+  5     21.0    1    2    3    4    0    [C;X3](=[NX3,NX2])(-[#7])-[#7,#6]   # trigonal carbon in ami-,guani-dinium
+  6      8.0    1    2    3    4    0    [a;X3](-,:[!#1])(-,:[!#1])-,:[!#1]  # aromatic atom 
+  7      2.2    1    2    3    4    0    [a;X3](-,:[*])(-,:[*])-,:[*]        # aromatic atom 
+  8      2.2    1    2    3    4    0    [C;X3](=[*])(-[*])-[*]              # C=  double bonded in [R]=[R!],[!R]=[R],[R]=[R]
+  9      2.0    1    3    4    2    0    [#7;X3](-,:[a;X3])(-,:[*])-,:[*]    # amino substituted aromatic rings
+ 10      2.0    1    4    5    2    0    [#7;X3](-[CX3]=[CX3])(-[*])-[*]     # vinyl amines
+ 11      2.0    1    4    5    2    0    [#7;X3](-[C]=[O,S,N])(-[*])-[*]     # amide, amidine-,guanidinium
+ 12      2.0    1    4    5    2    1    [#7;X3](-[P,S]=[O,S,N])(-[*])-[*]   # sulfonamide, phosphonamide 
+ 13      2.0    1    4    5    2    0    [#7;X3](-[*]=[O,S,N])(-[*])-[*]     # amide, amidine-,guanidinium
+ 14      2.0    1    2    3    4    0    [#7;X3](=[C;X3])(-[*])-[*]          # amidine-, guanidinium
+ 15     21.0    1    2    3    4    0    [C;X3](=[OX1])([OX1-])-[*]          # carboxylate 
+ 16     -2.0    4    5    6    2    0    CC(=O)N1CC1                         # disable torsion for acyl aziridine

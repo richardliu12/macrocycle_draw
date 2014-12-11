@@ -1,0 +1,1098 @@
+#  Symbol similarity table 
+#
+#  Each symbolic type used in on of the parameter files  stretch.dat, bend.dat,
+#  and torsion.dat must be defined in the first block of the file (before
+#  "SIMILARITY").
+#
+#  After the "SIMILARITY" label, the similarities between the symbols
+#  are defined such that each symbol can have a series of other symbols
+#  to which it can be similar to. How similar is defined by a number between
+#  0 and 100 where any number larger equals 50 has to be between symbols
+#  which are of the same hybrization of each element:
+#
+#  W. Damm, 04/19/04 
+#
+#  Added comments by M. Reboul:
+#
+#  Columns 2,3,4 below correspond to Symbol type values def_str_rad, 
+#  def_str_zstar, def_str_en, which may be used in stretch default 
+#  parameter assignment. They signify atom type-specific single-bond 
+#  radius, effective charge, electronegativity, with values taken from 
+#  UFF (at least initially).
+#
+#  Here, values < 0.0 signify invalid, which the code will observe. 
+#  Not all atom types will have valid values.
+#
+#  Mostly only primitive types will get valid values. We're going for 
+#  coverage here, not accuracy, and that should suffice, since this 
+#  table's pair scores should only map types in the direction from 
+#  less primitive to more primitive, and also primitive to self.
+#
+#          rad    zstar     en
+# EEK modifications
+  AcCTAz  -1.000  -1.000  -1.000
+  AcCAz   -1.000  -1.000  -1.000
+  AcOAz   -1.000  -1.000  -1.000
+  NAz     -1.000  -1.000  -1.000
+  CTAz    -1.000  -1.000  -1.000
+# end of modifications
+    ??   -1.000  -1.000  -1.000   # default don't delete this
+    BT    0.838   1.806   0.180   # B: tetravalent Boron
+    B     0.818   1.806   0.180   # B: trivalent Boron
+    B?   -1.000  -1.000  -1.000   # B: Boron
+    Li    1.336   1.055   0.025   # Li
+    Mg    1.421   1.838   0.111   # Mg
+    Br    1.192   2.591   0.251   # Br: Standard Br 
+     C    0.732   1.967   0.105   # C: C=O in amide or unsaturated amide
+   C3M   -1.000  -1.000  -1.000   # C: Unsaturated cyclopropyl carbon
+   C3T   -1.000  -1.000  -1.000   # C: Saturated cyclopropyl carbon
+    C4   -1.000  -1.000  -1.000   # C: Unsaturated C=O or C=S in beta-lactam
+   C4M   -1.000  -1.000  -1.000   # C: Unsaturated cyclobutene carbon
+   C4T   -1.000  -1.000  -1.000   # C: Saturated cyclobutyl carbon
+    C5   -1.000  -1.000  -1.000   # C: Azulene 5-membered ring 
+   C55   -1.000  -1.000  -1.000   # C: aromatic C in a 5,5 bridge 
+  C55A   -1.000  -1.000  -1.000   # C: -- may no longer be used --
+  C56A   -1.000  -1.000  -1.000   # C: C5A carbon in a 5,6 bridge
+  C56B   -1.000  -1.000  -1.000   # C: C5B carbon in a 5,6 bridge
+  C56P   -1.000  -1.000  -1.000   # C: "imidazolium" carbon in a 5,6-bridge
+  C56X   -1.000  -1.000  -1.000   # C: "imidazolium" carbon in a 5,6-bridge
+   C57   -1.000  -1.000  -1.000   # C: Azulene bridgehead carbons
+   C5A   -1.000  -1.000  -1.000   # C: CG in HIS, CD2 in HIE
+   C5B   -1.000  -1.000  -1.000   # C: CD2 in HIS, CG in HIE
+  C5BB   -1.000  -1.000  -1.000   # C: C3 in pyrazole -MPRstr
+  C5BC   -1.000  -1.000  -1.000   # C: C3 in pyrrole -MPRstr
+  C5BD   -1.000  -1.000  -1.000   # C: C4 in pyrazole -MPRbnd
+   C5M   -1.000  -1.000  -1.000   # C: CG in TRP - MPR str (was an C5A)
+   C5N   -1.000  -1.000  -1.000   # C: CD1 in TRP - MPR str (was an C5B)
+   C5W   -1.000  -1.000  -1.000   # C: C1 in N4-protonated pyrrole-pyrrole
+   C5X   -1.000  -1.000  -1.000   # C: CD2 in HID, CG in HIE
+    C7   -1.000  -1.000  -1.000   # C: Azulene 7-membered ring
+    C?   -1.000  -1.000  -1.000   # C: Default type
+    CA    0.729   1.967   0.105   # C: Benzene C 
+   C356  -1.000  -1.000  -1.000   # C: CA fusing aromatic and 3-membere ring
+   CA5   -1.000  -1.000  -1.000   # C: 5-membered ring aromatic carbon
+   CAA   -1.000  -1.000  -1.000   # C: 4-pi bridge in aromatic tricyclic
+   CAB   -1.000  -1.000  -1.000   # C: 4-pi bridge in aromatic tricyclic
+    CB   -1.000  -1.000  -1.000   # C: Adenine C5
+    CD   -1.000  -1.000  -1.000   # C: Imine 
+   CDS   -1.000  -1.000  -1.000   # C: doubly bonded to S
+   CDX   -1.000  -1.000  -1.000   # C: Imine with 2 or more N attachments
+   CDZ   -1.000  -1.000  -1.000   # C: diazomethane
+    CG   -1.000  -1.000  -1.000   # C: guanidinium C+ -MPRvdw
+   CHZ   -1.000  -1.000  -1.000   # C: hydrazone carbon
+   CIN   -1.000  -1.000  -1.000   # C: isonitrile carbon
+    CM    0.732   1.967   0.105   # C: alkene C (RH-C=) all atom
+   CM7   -1.000  -1.000  -1.000   # C: tropone
+   CMA   -1.000  -1.000  -1.000   # C: alpha C in C=CN(-)
+    CN   -1.000  -1.000  -1.000   # C: Adenine C4
+  CN55   -1.000  -1.000  -1.000   # C: C in pyrrole-thiophene
+  CN56   -1.000  -1.000  -1.000   # C: C56 bridge with N as other 5,6-bridge atom
+   CNA   -1.000  -1.000  -1.000   # C: Cytosine C6 -MPRnucstr JACS,113,2810(1991)
+    CO   -1.000  -1.000  -1.000   # C: C(HCO2): (hemi-)acetal/aminal
+   CO1   -1.000  -1.000  -1.000   # C: hexopyranose
+   CO3   -1.000  -1.000  -1.000   # C: C in C(=S)[S-] thiocarboxylate
+   CO4   -1.000  -1.000  -1.000   # C: aldehyde - for C-alpha use 135 -MPRtor -WDpattern
+   CP1   -1.000  -1.000  -1.000   # C: CP1 C on N: tertiary N-CH2R amide (Pro Cdelta)
+    CQ   -1.000  -1.000  -1.000   # C: Adenine C2
+    CR   -1.000  -1.000  -1.000   # C: CE1 in HID, HIE
+   CR3   -1.000  -1.000  -1.000   # C: bridgehead C in aromatic tricyclic
+   CRA   -1.000  -1.000  -1.000   # C: CE1 in HIS, HIE
+  CRAB   -1.000  -1.000  -1.000   # C: Adenine C8 Guanine -MPRnucstr
+   CRB   -1.000  -1.000  -1.000   # C: C3 in 1,2,4-triazole
+   CRP   -1.000  -1.000  -1.000   # C: C2 in imidazolium
+    CS   -1.000  -1.000  -1.000   # C: Heme
+    CT    0.757   1.967   0.105   # C: Tetrahedral sp3 carbon
+   CT1   -1.000  -1.000  -1.000   # C: Protein C alpha
+   CT2   -1.000  -1.000  -1.000   # C: CC(=O)OH in dicarboxylic acid
+   CT3   -1.000  -1.000  -1.000   # C: CH2 in trifluoroethanol, etc.
+   CT4   -1.000  -1.000  -1.000   # C: aromatic C in trypophan
+   CTA   -1.000  -1.000  -1.000   # C: Special type for CB in ASN
+   CTB   -1.000  -1.000  -1.000   # C: Special type for CB in GLN
+   CTC   -1.000  -1.000  -1.000   # C: Special type for CB in HIS
+   CTD   -1.000  -1.000  -1.000   # C: Special type for CB in LEU
+   CTE   -1.000  -1.000  -1.000   # C: Special type for CB in ILE
+   CTF   -1.000  -1.000  -1.000   # C: Special type for CB in VAL
+   CTG   -1.000  -1.000  -1.000   # C: Special type for CB in MET
+   CTH   -1.000  -1.000  -1.000   # C: alkanes ALL-ATOM
+   CTI   -1.000  -1.000  -1.000   # C: Special type for CB in ASP
+   CTJ   -1.000  -1.000  -1.000   # C: Special type for CB in GLU
+   CTK   -1.000  -1.000  -1.000   # C: Special type for CG in LYS
+   CTL   -1.000  -1.000  -1.000   # C: Special type for CB in HIP
+   CTM   -1.000  -1.000  -1.000   # C: Special type for CB in ARG
+   CTN   -1.000  -1.000  -1.000   # C: Special type for 
+   CTO   -1.000  -1.000  -1.000   # C: Special type for 
+   CTP   -1.000  -1.000  -1.000   # C: Special type for 
+   CTQ   -1.000  -1.000  -1.000   # C: Special type for 
+   CTR   -1.000  -1.000  -1.000   # C: Special type for 
+   CTS   -1.000  -1.000  -1.000   # C: Special type for 
+   CTT   -1.000  -1.000  -1.000   # C: Special type for 
+    CW   -1.000  -1.000  -1.000   # C: Heme
+    CZ    0.706   1.967   0.105   # C: Benzonitrile
+   CZA   -1.000  -1.000  -1.000   # C: allene carbon
+    Cl    1.044   2.416   0.227   # Chlorine
+     F    0.668   1.785   0.050   # Fluorine
+   Fe3+  -1.000  -1.000  -1.000   #
+   Fe2+  -1.000  -1.000  -1.000   #
+    Fe    1.303   2.500   0.013   # Fe
+   Fe?   -1.000  -1.000  -1.000   #
+     H    0.354   0.733   0.044   # Ammonia H
+    H?   -1.000  -1.000  -1.000   #
+    HA   -1.000  -1.000  -1.000   # Benzene H - 12 site JACS,112,4768-90
+    HC    0.354   0.733   0.044   # H: alkanes
+    HO   -1.000  -1.000  -1.000   # H(O): alcohols
+    HP   -1.000  -1.000  -1.000   # H attached to P
+    HS   -1.000  -1.000  -1.000   # H attached to divalent S - MPRvdw
+   HSi   -1.000  -1.000  -1.000   # hydrogen attached to Si
+   HT3   -1.000  -1.000  -1.000   # T3P
+   HT4   -1.000  -1.000  -1.000   # T4P
+   HWS   -1.000  -1.000  -1.000   # SPC
+     I    1.382   2.730   0.339   # Iodine
+   MT4   -1.000  -1.000  -1.000   # T4P
+    Mn    1.382   2.500   0.013   # Mn
+     N    0.685   2.617   0.069   # amide N 
+    N4   -1.000  -1.000  -1.000   # N in beta-lactam
+    N*   -1.000  -1.000  -1.000   # Adenine N9 Guanine -use AT=N* for -MPRdeping
+    N3    0.700   2.617   0.069   # Ammonia N
+   N3T   -1.000  -1.000  -1.000   # saturated N in 3-membered ring
+   N4T   -1.000  -1.000  -1.000   # saturated N in 4-membered ring
+   N4M   -1.000  -1.000  -1.000   # unsaturated N in 4-membered ring
+   N55   -1.000  -1.000  -1.000   # aromatic N in a 5,5 bridge
+  N56P   -1.000  -1.000  -1.000   # N56+ bridge with C as other 5,6-bridge atom
+   N5A   -1.000  -1.000  -1.000   # N2 in pyrazole
+   N5B   -1.000  -1.000  -1.000   # NE in HIS, ND in HIE
+   N5M   -1.000  -1.000  -1.000   # N1 in tetrazole anion
+   N5P   -1.000  -1.000  -1.000   # N1 in imidazolium    
+    N?   -1.000  -1.000  -1.000   # N: Default type
+    NB    0.699   2.617   0.069   # aromatic 6-ring nitrogen
+    NA   -1.000  -1.000  -1.000   # 5-ring pyrrole-type nitrogen
+  NA5B   -1.000  -1.000  -1.000   # N in HID -MPRstr
+   NA6   -1.000  -1.000  -1.000   # tricoordinate N in 4-pi bridge in aromatic tricyclic
+   NAA   -1.000  -1.000  -1.000   # N in 4-pi bridge in aromatic tricyclic
+   NAB   -1.000  -1.000  -1.000   # N in 4-pi bridge in aromatic tricyclic
+   NAP   -1.000  -1.000  -1.000   # protonated or alkylated aromatic nitrogen
+   NAX   -1.000  -1.000  -1.000   # N in aromatic nitroxide
+   NA5   -1.000  -1.000  -1.000   # NE in HID, ND in HIE
+    NC   -1.000  -1.000  -1.000   # N1 pteridine ar75
+  NC55   -1.000  -1.000  -1.000   # N in pyrrole-thiophene
+  NC56   -1.000  -1.000  -1.000   # aromatic N with C as other 5,6-bridge atom
+    NE   -1.000  -1.000  -1.000   # enamine N
+    NG   -1.000  -1.000  -1.000   # N: guanidinium [NH2] - MPRvdw
+    NH   -1.000  -1.000  -1.000   # hydrazine nitrogen #
+   NHZ   -1.000  -1.000  -1.000   # terminal hydrazone nitrogen
+    NI    0.685   2.617   0.069   # imine or hydrazone
+   NIN   -1.000  -1.000  -1.000   # isonitrile nitrogen
+   NIP    0.685   2.617   0.069   # protonated or alkylated imine N
+   NIX   -1.000  -1.000  -1.000   # N-oxide nitrogen, unsaturated
+    NM    0.700   2.617   0.069   # N in RNH-
+   NMX   -1.000  -1.000  -1.000   # N analoge of N-oxide O
+    NN   -1.000  -1.000  -1.000   # azo nitrogen
+   NNA   -1.000  -1.000  -1.000   # Adenine N7 Guanine -MPRnuclstr
+   NNB   -1.000  -1.000  -1.000   # Uracil N1 -use AT=N* for Nucleoside -MPRnulcstr
+   NNC   -1.000  -1.000  -1.000   # Cytosine N3 - MPR modified for mmlewis cys+ str. -MPRnucstr
+   NND   -1.000  -1.000  -1.000   # Cytosine N-C4 -MPRnucbnd
+   NNE   -1.000  -1.000  -1.000   # Cytosine N1 -use AT=N* for Nucleosied -MPRnucstr
+   NNF   -1.000  -1.000  -1.000   # Adenine N9
+    NO   -1.000  -1.000  -1.000   # N in nitroso R-NO
+   NO2    0.685   2.617   0.069   # N in nitro R-NO2
+   NO3   -1.000  -1.000  -1.000   # N in nitrite R-ONO2
+   NOM   -1.000  -1.000  -1.000   # N in NO3- F. van Veggel
+    NP   -1.000  -1.000  -1.000   # aliphatic quaternary N  
+  NP56   -1.000  -1.000  -1.000   # pyridinuim N in 5,6 bridge
+   NR3   -1.000  -1.000  -1.000   # bridgehead N in aromatic tricyclic
+    NS   -1.000  -1.000  -1.000   # N in sulfonamide/sulfamate
+   NST   -1.000  -1.000  -1.000   # N analog of O double bonded to S
+    NT    0.700   2.617   0.069   # N in aliphatic amine
+   NTX   -1.000  -1.000  -1.000   # N-oxide nitrogen, saturated
+    NX   -1.000  -1.000  -1.000   # P analog of sulfone/sulfonamide N
+    NX2  -1.000  -1.000  -1.000   # azaoxide N
+    NY   -1.000  -1.000  -1.000   # NE of neutral ARG -MPR tor
+    NZ    0.656   2.617   0.069   # benzonitrile - MPRvdw
+   NZA   -1.000  -1.000  -1.000   # azide   ???
+   NZC   -1.000  -1.000  -1.000   # azide, diazomethane  ???
+   NZP   -1.000  -1.000  -1.000   # diazonium N+ or alkylated nitrile N+
+   NZT   -1.000  -1.000  -1.000   # azide, diazomethane  ???
+     O    0.639   2.366   0.060   # O: C=O in unsaturated amide.
+   O2Z   -1.000  -1.000  -1.000   # O: O in C(=O)[O-] carboxylate - MPRvdw
+   O3T   -1.000  -1.000  -1.000   # O in 3-membered ring
+   O4T   -1.000  -1.000  -1.000   # O in 4-membered ring
+    O?   -1.000  -1.000  -1.000   # O: Default type
+    OA   -1.000  -1.000  -1.000   # 5-ring aromatic oxygen
+   OC3   -1.000  -1.000  -1.000   # Oc in CC(=O)OH neutral; use 135-140   ## Must keep OCS for AA typing
+    OH   -1.000  -1.000  -1.000   # hydroxyl amide added WD
+   OH2   -1.000  -1.000  -1.000   # O: diols - MPRvdw
+   OH5   -1.000  -1.000  -1.000   # hexopyranose
+    OM   -1.000  -1.000  -1.000   # O in R[O-]
+    ON   -1.000  -1.000  -1.000   # O in nitro R-NO2
+   ONX   -1.000  -1.000  -1.000   # N-oxide O on unsaturated N
+    OS    0.658   2.366   0.060   # divalent O attached to pyrrole-type N
+   OS1   -1.000  -1.000  -1.000   # hexopyranose
+   OT3   -1.000  -1.000  -1.000   # T3P
+   OT4   -1.000  -1.000  -1.000   # T4P
+    OU   -1.000  -1.000  -1.000   # O in UO2+ r(U-O) = 1.80 A   ???
+   OWS   -1.000  -1.000  -1.000   # SPC
+    OY   -1.000  -1.000  -1.000   # O default WD
+    OZ   -1.000  -1.000  -1.000   # terminal O in sulfoxide and related - MPRvdw
+    P1   -1.000  -1.000  -1.000   # P in P=O, phosphine oxide
+    P2    1.056   2.945   0.305   # P default
+    P3   -1.000  -1.000  -1.000   # P in PO3--
+    P4   -1.000  -1.000  -1.000   # P in PO4--
+    P?   -1.000  -1.000  -1.000   # P: Default type
+    PM    1.101   2.945   0.305   # P double bonded to C
+    PP   -1.000  -1.000  -1.000   # P phosphonium ion
+    PR   -1.000  -1.000  -1.000   # phosphine or substituted phosphine
+     S    1.064   2.781   0.274   # divalent S attached to pyrrole-type N
+    SD    1.064   2.781   0.274   # S in thioamides, thioketones, etc.
+    SX   -1.000  -1.000  -1.000   # S in C=S=O linkage
+    S?   -1.000  -1.000  -1.000   #
+    SA   -1.000  -1.000  -1.000   # 5-ring aromatic sulfur
+    SH   -1.000  -1.000  -1.000   # disulfide SH
+    SM    1.064   2.781   0.274   # S in C=CS-
+   SM2   -1.000  -1.000  -1.000   # thiocarboxylate sulfur
+    ST   -1.000  -1.000  -1.000   # terminal S on tetracoordinate P
+    SX6   1.027   2.781   0.274   # SX6 default
+    SY    1.027   2.781   0.274   # S default
+    SZ    1.049   2.781   0.274   # S in sulfoxide and related 
+    Sc    1.513   2.667   0.019   # Sc UFF
+    Si    1.117   2.390   0.402   # Si: Default type from UFF
+   Si?   -1.000  -1.000  -1.000   # Si: Default type
+    Se    1.190   2.844   0.291   # divalent Se
+   Se?   -1.000  -1.000  -1.000   # divalent Se
+   As     1.211   2.946   0.309   # [As]
+   As?   -1.000  -1.000  -1.000   # [As]       
+   N3M   -1.000  -1.000  -1.000   # unsaturated N in 3-membered ring
+   N4M   -1.000  -1.000  -1.000   # unsaturated N in 3-membered ring
+     X   -1.000  -1.000  -1.000   # generic halogen
+   CTV   -1.000  -1.000  -1.000   # for pff
+   CTW   -1.000  -1.000  -1.000   # for pff
+   HC7   -1.000  -1.000  -1.000   # for pff
+   CA8   -1.000  -1.000  -1.000   # for pff
+   COO   -1.000  -1.000  -1.000   # for pff
+    N2   -1.000  -1.000  -1.000   # for pff
+    H3   -1.000  -1.000  -1.000   # for pff
+    C1   -1.000  -1.000  -1.000   # for pff
+    N1   -1.000  -1.000  -1.000   # for pff
+   CG1   -1.000  -1.000  -1.000   # for pff
+    O1   -1.000  -1.000  -1.000   # for pff
+    O2   -1.000  -1.000  -1.000   # for pff
+   OH7   -1.000  -1.000  -1.000   # for pff
+    CV   -1.000  -1.000  -1.000   # for pff
+    CX   -1.000  -1.000  -1.000   # for pff
+   NA1   -1.000  -1.000  -1.000   # for pff
+   N3A   -1.000  -1.000  -1.000   # for pff
+    C*   -1.000  -1.000  -1.000   # for pff
+   CB9   -1.000  -1.000  -1.000   # for pff
+   CA2   -1.000  -1.000  -1.000   # for pff
+   OH6   -1.000  -1.000  -1.000   # for pff
+  CTHO   -1.000  -1.000  -1.000   # Halogen subtstitued CT aryl ether
+  NTH0   -1.000  -1.000  -1.000   # N tertiary aliphatic
+  NTH    -1.000  -1.000  -1.000   # N secondary aliphatic
+  NTH2   -1.000  -1.000  -1.000   # N primary aliphatic
+  CTTD   -1.000  -1.000  -1.000   # CD in neutralized lysine
+  CTU    -1.000  -1.000  -1.000   # CB in Ser or Thr
+    U     1.684   4.000   0.022   # U in UO2+ J Mol Struct 366, 55 (96)
+    U?   -1.000  -1.000  -1.000   # U default
+   V5+    1.402   2.756   0.016   # 
+    V     1.402   2.756   0.016   # 
+    V?   -1.000  -1.000  -1.000   # 
+    W     1.433   3.800   0.067   # 
+    W?   -1.000  -1.000  -1.000   # 
+   Mo6+   1.476   3.500   0.056   # 
+    Mo    1.476   3.500   0.056   # 
+    Mo?  -1.000  -1.000  -1.000   # 
+   Zn2+  -1.000  -1.000  -1.000   # 
+    Zn    1.193   1.346   0.124   # 
+    Zn?  -1.000  -1.000  -1.000   # 
+   Cu2+  -1.000  -1.000  -1.000   # 
+    Cu    1.302   1.807   0.005   # 
+    Cu?  -1.000  -1.000  -1.000   # 
+   Ni2+  -1.000  -1.000  -1.000   # 
+    Ni    1.164   2.500   0.015   # 
+    Ni?  -1.000  -1.000  -1.000   # 
+   Pt2+  -1.000  -1.000  -1.000   # 
+    Pt    1.364   3.479   0.080   # 
+    Pt?  -1.000  -1.000  -1.000   # 
+    Du   -1.000  -1.000  -1.000   # Du
+    Du?  -1.000  -1.000  -1.000   # Du
+    M    -1.000  -1.000  -1.000   # Metal symbol
+#
+### SIMILARITY TABLE (DON'T DELETE THIS LINE)
+#
+# EEK modifications:
+# acyl aziridine
+#AcCTAz   AcCTAz   100
+#AcCTAz   CT1      80
+AcCAz    AcCAz    100
+AcCAz    C        80
+AcOAz    AcOAz    100
+AcOAz    O        80
+NAz      NAz      100
+NAz      N        80
+CTAz     CTAz     100
+CTAz     C3T      80
+# end of modifications
+Br     Br     100
+Br     X      10  
+C      C      100  
+C      C?      10  
+C3M    C3M    100  
+C3M    CM      80  
+C3M    C?      10  
+C3T    C3T    100  
+C3T    CT      80  
+C3T    C?      10  
+C4     C4     100  
+C4     C       80  
+C4     C?      10  
+CM7    CM7    100  
+CM7    CM      80  
+CM7    C       50  
+CM7    C?      10  
+C4M    C4M    100  
+C4M    CM      80  
+C4M    C?      10  
+C4T    C4T    100  
+C4T    CT      80  
+C4T    C?      10  
+C356   C356   100  
+C356   CA      50  
+C356   C?      10  
+C5     C5     100  
+C5     CA5     80  
+C5     CA      50
+C5     C?      10  
+C55    C55    100
+C55    CA5     80
+C55    CA      50
+C55    C?      10
+C55A   C55A   100  
+C55A   CA5     80
+C55A   CA      50  
+C55A   C?      10  
+C56A   C56A   100  
+C56A   CA5     80
+C56A   CA      50  
+C56A   C?      10  
+C56B   C56B   100  
+C56B   CA5     80
+C56B   CA      50  
+C56B   C?      10  
+C56P   C56P   100  
+C56P   CA5     80
+C56P   CA      50  
+C56P   C?      10  
+C56X   C56X   100  
+C56X   CA5     80
+C56X   CA      50  
+C56X   C?      10  
+C57    C57    100  
+C57    CA5     80  
+C57    CA      50  
+C57    C?      10  
+C5A    C5A    100  
+C5A    CA5     80  
+C5A    CA      50  
+C5A    C?      10  
+C5B    C5B    100  
+C5B    CA5     80  
+C5B    CA      50  
+C5B    C?      10  
+C5BB   C5BB   100  
+C5BB   CA5     80  
+C5BB   CA      50  
+C5BB   C?      10  
+C5BC   C5BC   100  
+C5BC   CA5     80  
+C5BC   CA      50  
+C5BC   C?      10  
+C5BD   C5BD   100  
+C5BD   CA5     80  
+C5BD   CA      50  
+C5BD   C?      10  
+C5M    C5M    100  
+C5M    CA5     80  
+C5M    CA      50  
+C5M    C?      10  
+C5N    C5N    100  
+C5N    CA5     80  
+C5N    CA      50  
+C5N    C?      10  
+C5W    C5W    100  
+C5W    CA5     80  
+C5W    CA      50  
+C5W    C?      10  
+C5X    C5X    100  
+C5X    CA5     80  
+C5X    CA      50  
+C5X    C?      10  
+C7     C7     100  
+C7     CA      80  
+C7     C?      10  
+CA     CA     100  
+CA     C?      10  
+CA5    CA5    100  
+CA5    CA      50  
+CA5    C?      10  
+CAA    CAA    100  
+CAA    CA      50  
+CAA    C?      10  
+CAB    CAB    100  
+CAB    CA      50  
+CAB    CA5     40
+CAB    C?      10  
+CB     CB     100  
+CB     CA5     80
+CB     CA      50  
+CB     C?      10  
+CD     CD     100  
+CD     CM      50  
+CD     C?      10  
+CDS    CDS    100
+CDS    C       50
+CDS    C?      10
+CDX    CDX    100  
+CDX    CD      80  
+CDX    CM      50  
+CDX    C?      10  
+CDZ    CDZ    100  
+CDZ    CD      80  
+CDZ    CM      50  
+CDZ    C?      10  
+CG     CG     100  
+CG     CD      80  
+CG     CM      50  
+CG     C?      10  
+CHZ    CHZ    100  
+CHZ    CD      80  
+CHZ    CM      50  
+CHZ    C?      10  
+CIN    CIN    100  
+CIN    CZ      80  
+CIN    C?      10  
+CM     CM     100  
+CM     C?      10  
+CMA    CMA    100  
+CMA    CM      80  
+CMA    C?      10  
+CN     CN     100  
+CN     CA5     80  
+CN     CA      50
+CN     C?      10  
+CN55   CN55   100  
+CN55   CA5     80  
+CN55   CA      50  
+CN55   C?      10  
+CN56   CN56   100  
+CN56   CA5     80  
+CN56   CA      50
+CN56   C?      10  
+CNA    CNA    100  
+CNA    CM      80  
+CNA    CD      50
+CNA    C?      10  
+CO     CO     100  
+CO     CT      80  
+CO     C?      10  
+CO1    CO1    100  
+CO1    CT      80  
+CO1    C?      10  
+CO3    CO3    100  
+CO3    C       80  
+CO3    C?      10  
+CO4    CO4    100  
+CO4    C       80  
+CO4    C?      10  
+CP1    CP1    100  
+CP1    CT      80  
+CP1    C?      10  
+CQ     CQ     100  
+CQ     CA      50  
+CQ     C?      10  
+CR     CR     100  
+CR     CA5     80  
+CR     CA      50  
+CR     C?      10  
+CR3    CR3    100  
+CR3    CA      80  
+CR3    C?      10  
+CRA    CRA    100  
+CRA    CA5     80  
+CRA    CA      50  
+CRA    C?      10  
+CRAB   CRAB   100  
+CRAB   CRA     90
+CRAB   CA5     80  
+CRAB   CA      50  
+CRAB   C?      10  
+CRB    CRB    100  
+CRB    CA      80  
+CRB    C?      10  
+CRP    CRP    100  
+CRP    CA5     80  
+CRP    CA      50  
+CRP    C?      10  
+CS     CS     100  
+CS     CA      80  
+CS     C?      10  
+CT     CT     100  
+CT     C?      10  
+CT1    CT1    100  
+CT1    CT      80  
+CT1    C?      10  
+CT2    CT2    100  
+CT2    CT      80  
+CT2    C?      10  
+CT3    CT3    100  
+CT3    CT      80  
+CT3    C?      10  
+CT4    CT4    100  
+CT4    CA5     80  
+CT4    CA      50  
+CT4    C?      10  
+CTA    CTA    100  
+CTA    CT      80
+CTA    C?      10  
+CTB    CTB    100  
+CTB    CT      80  
+CTB    C?      10
+CTC    CTC    100  
+CTC    CT      80  
+CTC    C?      10
+CTD    CTD    100  
+CTD    CT      80  
+CTD    C?      10
+CTE    CTE    100  
+CTE    CT      80  
+CTE    C?      10
+CTF    CTF    100  
+CTF    CT      80  
+CTF    C?      10
+CTG    CTG    100  
+CTG    CT      80  
+CTG    C?      10
+CTH    CTH    100  
+CTH    CT      80  
+CTH    C?      10
+CTI    CTI    100  
+CTI    CT      80  
+CTI    C?      10
+CTJ    CTJ    100  
+CTJ    CT      80  
+CTJ    C?      10
+CTK    CTK    100  
+CTK    CT      80  
+CTK    C?      10
+CTL    CTL    100  
+CTL    CT      80  
+CTL    C?      10
+CTM    CTM    100  
+CTM    CT      80  
+CTM    C?      10
+CTN    CTN    100  
+CTN    CT      80  
+CTN    C?      10
+CTO    CTO    100  
+CTO    CT      80  
+CTO    C?      10
+CTP    CTP    100  
+CTP    CT      80  
+CTP    C?      10
+CTQ    CTQ    100  
+CTQ    CT      80  
+CTQ    C?      10
+CTR    CTR    100  
+CTR    C       80  
+CTR    C?      10
+CTR    CM      50  
+CTS    CTS    100  
+CTS    CT      80  
+CTS    C?      10
+CTT    CTT    100  
+CTT    CT      80  
+CTT    C?      10
+CW     CW     100  
+CW     CA      80  
+CW     C?      10  
+CZ     CZ     100  
+CZ     C?      10  
+CZA    CZA    100  
+CZA    CZ      80  
+CZA    C?      10  
+Cl     Cl     100
+Cl     X      10  
+F      F      100
+F      X      10  
+Fe3+   Fe3+   100
+Fe3+   Fe      50
+Fe3+   Fe?     10
+Fe2+   Fe2+   100
+Fe2+   Fe      50
+Fe2+   Fe?     10
+Fe     Fe     100  
+Fe     Fe?     10
+H      H      100  
+H      H?      10  
+HA     HA     100
+HA     H       50  
+HA     H?      10  
+HC     HC     100  
+HC     H?      10  
+HO     HO     100
+HO     H       50  
+HO     H?      10  
+HP     HP     100
+HP     HC      50  
+HP     H?      10  
+HS     HS     100
+HS     H       50  
+HS     H?      10  
+HSi    HSi    100  
+HSi    HC      50  
+HSi    H?      10  
+HT3    HT3    100  
+HT4    HT4    100  
+HWS    HWS    100  
+I      I      100
+I      X      10  
+MT4    MT4    100  
+N      N      100  
+N      N?      10  
+N4     N4     100  
+N4     N       40  
+N4     N?      10  
+N*     N*     100  
+N*     NA      80
+N*     N       60
+N*     NB      50
+N*     N?      10  
+N3     N3     100  
+N3T    N3T    100  
+N3T    NT      80  
+N3T    N?      10  
+N4T    N4T    100  
+N4T    NT      80  
+N4T    N?      10  
+N4M    N4M    100
+N4M    NI      80
+N4M    N?      10
+N55    N55    100  
+N55    NA      80  
+N55    NB      50  
+N55    N?      10  
+N56P   N56P   100  
+N56P   NA      80  
+N56P   NB      50  
+N56P   N?      10  
+N5A    N5A    100  
+N5A    NB      50  
+N5A    N?      10  
+N5B    N5B    100  
+N5B    N5A     80  
+N5B    NB      50  
+N5B    N?      10  
+N5M    N5M    100  
+N5M    N5A     80  
+N5M    NB      50  
+N5M    N?      10  
+N5P    N5P    100  
+N5P    NA      80  
+N5P    NB      50
+N5P    N?      10  
+NB     NB     100  
+NB     N?      10  
+NA     NA     100  
+NA     NB      50  
+NA     N?      10  
+NA5B   NA5B   100  
+NA5B   N5A     80  
+NA5B   NB      50  
+NA5B   N?      10  
+NA6    NA6    100  
+NA6    NB      80  
+NA6    N?      10  
+NAA    NAA    100  
+NAA    N5A     80  
+NAA    NB      50  
+NAA    N?      10  
+NAB    NAB    100  
+NAB    N5A     80  
+NAB    NB      50  
+NAB    N?      10  
+NAP    NAP    100  
+NAP    NB      50
+NAP    N?      10  
+NAX    NAX    100  
+NAX    NAP     80
+NAX    NB      50  
+NAX    N?      10  
+NA5    NA5    100  
+NA5    NA      80
+NA5    NB      50  
+NA5    N?      10  
+NC     NC     100  
+NC     NB      50  
+NC     N?      10  
+NC55   NC55   100  
+NC55   NA      80  
+NC55   NB      50  
+NC55   N?      10  
+NC56   NC56   100  
+NC56   NA      80  
+NC56   NB      50  
+NC56   N?      10  
+NE     NE     100  
+NE     N       50  
+NE     N?      10  
+NG     NG     100  
+NG     NE      80  
+NG     N       50  
+NG     N?      10  
+NH     NH     100  
+NH     NT      80  
+NH     N?      10  
+NHZ    NHZ    100  
+NHZ    NE      80  
+NHZ    N       50  
+NHZ    N?      10  
+NI     NI     100  
+NI     N?      10  
+NIN    NIN    100  
+NIN    NZ      80  
+NIN    N?      10  
+NIP    NIP    100  
+NIP    N?      10  
+NIX    NIX    100  
+NIX    NIP     80  
+NIX    N?      10  
+NM     NM     100  
+NM     NS      80  
+NM     N?      10  
+NMX    NMX    100  
+NMX    NM      80  
+NMX    N?      10  
+NN     NN     100  
+NN     NI      80  
+NN     N?      10  
+NNA    NNA    100  
+NNA    N5A     80  
+NNA    NB      50  
+NNA    N?      10  
+NNB    NNB    100  
+NNB    N       80  
+NNB    N?      10  
+NNC    NNC    100  
+NNC    NI      80  
+NNC    NB      60
+NNC    N       50
+NNC    N?      10  
+NND    NND    100  
+NND    NE      80  
+NND    N       50
+NND    N?      10  
+NNE    NNE    100  
+NNE    N       80  
+NNE    N?      10  
+NNF    NNF    100  
+NNF    NA      80
+NNF    NB      50  
+NNF    N?      10  
+NO     NO     100  
+NO     NI      80  
+NO     N?      10  
+NO2    NO2    100  
+NO2    N?      10  
+NO3    NO3    100  
+NO3    NO2     50  
+NO3    N?      10  
+NOM    NOM    100  
+NOM    NO2     50
+NOM    N?      10  
+NP     NP     100  
+NP     NT      30  
+NP     N?      10  
+NP56   NP56   100  
+NP56   NA      80  
+NP56   NB      50  
+NP56   N?      10  
+NR3    NR3    100  
+NR3    NA      80  
+NR3    NB      50  
+NR3    N?      10  
+NS     NS     100  
+NS     NT      50  
+NS     N?      10  
+NST    NST    100  
+NST    NI      80  
+NST    N?      10  
+NT     NT     100  
+NT     N?      10  
+NTX    NTX    100  
+NTX    NP      80  
+NTX    NT      50  
+NTX    N?      10  
+NX     NX     100  
+NX     NT      50  
+NX     N?      10
+NX2    NX2    100
+NX2    NMX     50
+NX2    NM      25
+NX2    N?      10  
+NY     NY     100  
+NY     N       50  
+NY     N?      10  
+NZ     NZ     100  
+NZ     N?      10  
+NZA    NZA    100  
+NZA    NI      50  
+NZA    N?      10  
+NZC    NZC    100  
+NZC    NZ     80  
+NZC    NI      50  
+NZC    N?      10  
+NZP    NZP    100
+NZP    NZ      50
+NZP    N?      10
+NZT    NZT    100  
+NZT    NZ      80  
+NZT    N?      10
+O      O      100  
+O      O?      10  
+O2Z    O2Z    100  
+O2Z    O       50  
+O2Z    O?      10  
+O3T    O3T    100  
+O3T    OS      80  
+O3T    O?      10  
+O4T    O4T    100  
+O4T    OS      80  
+O4T    O?      10  
+OA     OA     100  
+OA     OS      40  
+OA     O?      10  
+OC3    OC3    100  
+OC3    O       50  
+OC3    O?      10  
+OH     OH     100  
+OH     OS      50  
+OH     O?      10  
+OH2    OH2    100  
+OH2    OH      80  
+OH2    OS      50  
+OH2    O?      10  
+OH5    OH5    100  
+OH5    OH      80  
+OH5    OS      50  
+OH5    O?      10  
+OM     OM     100  
+OM     OS      50  
+OM     O?      10  
+ON     ON     100  
+ON     O2Z     80  
+ON     O       50  
+ON     O?      10  
+ONX    ONX    100  
+ONX    OM      80  
+ONX    O       50  
+ONX    O?      10  
+OS     OS     100  
+OS     O?      10  
+OS1    OS1    100  
+OS1    OS      80  
+OS1    O?      10  
+OT3    OT3    100  
+OT4    OT4    100  
+OWS    OWS    100  
+OY     OY     100  
+OY     O       50
+OY     O?      10  
+OZ     OZ     100  
+OZ     OM      60  
+OZ     O       50  
+OZ     O?      10  
+P1     P1     100  
+P1     P2      80  
+P1     P?      10  
+P2     P2     100  
+P2     P2      80  
+P2     P?      10  
+P3     P3     100  
+P3     P2      80  
+P3     P?      10  
+P4     P4     100  
+P4     P2      80  
+P4     P?      10  
+PM     PM     100  
+PM     P?      10  
+PP     PP     100  
+PP     P2      50  
+PP     P?      10  
+PR     PR     100  
+PR     P2      50  
+PR     P?      10  
+S      S      100  
+S      S?      10  
+SD     SD     100  
+SD     S?      10  
+SX     SX     100
+SX     SD      50
+SX     S?      10
+SA     SA     100  
+SA     S       40
+SA     S?      10  
+SH     SH     100  
+SH     S       50  
+SH     S?      10  
+SM     SM     100  
+SM     S       80  
+SM     S?      10  
+SM2    SM2    100  
+SM2    SM      80  
+SM2    S?      10  
+ST     ST     100  
+ST     SD      80  
+ST     S?      10  
+SX6    SX6    100  
+SX6    S?      10  
+SY     SY     100  
+SY     S?      10  
+SZ     SZ     100  
+SZ     S?      10  
+Sc     Sc     100  
+Si     Si     100  
+Si     Si?     10  
+Se     Se     100  
+Se     Se?     10  
+N3M    N3M    100  
+N3M    NI      80  
+N3M    N?      10  
+N4M    N4M    100  
+N4M    NI      80  
+N4M    N?      10  
+CTV    CTV    100  
+CTV    CT      80  
+CTV    C?      10  
+CTW    CTW    100  
+CTW    CT      80  
+CTW    C?      10  
+HC7    HC7    100  
+HC7    HC      80  
+HC7    H?      10  
+CA8    CA8    100  
+CA8    CA      80  
+CA8    C?      10  
+COO    COO    100  
+COO    CO      80  
+COO    CM      50  
+COO    C?      10  
+N2     N2     100  
+N2     N       80  
+N2     N?      10  
+H3     H3     100  
+H3     H       80  
+H3     H?      10  
+C1     C1     100  
+C1     C1      80  
+C1     C       50  
+C1     C?      10  
+N1     N1     100  
+N1     N       80  
+N1     N?      10  
+O1     O1     100  
+O1     O       80  
+O1     O?      10  
+CG1    CG1    100  
+CG1    CG      80  
+CG1    CM      50  
+CG1    C?      10  
+O2     O2     100  
+O2     O       80  
+O2     O?      10  
+OH7    OH7    100  
+OH7    O       80  
+OH7    O?      10  
+CV     CV     100  
+CV     CA      80  
+CV     C?      10  
+CX     CX     100  
+CX     CA      80  
+CX     C?      10  
+NA1    NA1    100  
+NA1    NA      80  
+NA1    N?      10  
+N3A    N3A    100  
+N3A    N       80  
+N3A    N?      10  
+C*     C*     100  
+C*     C       80  
+C*     C?      10  
+CB9    CB9    100  
+CB9    C       80  
+CB9    C?      10  
+CA2    CA2    100  
+CA2    CA      80  
+CA2    C?      10  
+OH6    OH6    100  
+OH6    OH      80  
+OH6    O?      10  
+CTHO   CTHO   100  
+CTHO   CT      80  
+CTHO   C?      10  
+NTH0   NTH0   100  
+NTH0   NT      50  
+NTH0   N?      10  
+NTH    NTH    100  
+NTH    NT      50  
+NTH    N?      10  
+NTH2   NTH2   100  
+NTH2   NT      50  
+NTH2   N?      10  
+CTTD   CTTD    80  
+CTTD   CT      80  
+CTTD   C?      10  
+CTU    CTU     80  
+CTU    CT      80  
+CTU    C?      10  
+Li     Li     100
+Mg     Mg     100
+BT     BT     100
+BT     B?      10
+B      B      100
+B      B?      10
+As     As     100
+As     As?     10
+U      U      100
+U      M       30
+U      U?      10
+V5+    V5+    100
+#V5+    V       50  # out now, to avoid changing pdb_models_f14.out 
+V5+    V?      10
+V      V      100
+V      V?      10
+W      W      100
+W      W?      10
+Mo6+   Mo6+   100
+#Mo6+   Mo      50  # out now, to avoid changing pdb_models_f14.out
+Mo6+   Mo?     10
+Mo     Mo     100
+Mo     Mo?     10
+Zn2+   Zn2+   100
+Zn2+   Zn      50
+Zn2+   Zn?     10
+Zn     Zn     100
+Zn     Zn?     10
+Cu2+   Cu2+   100
+Cu2+   Cu      50
+Cu2+   Cu?     10
+Cu     Cu     100
+Cu     Cu?     10
+Ni2+   Ni2+   100
+Ni2+   Ni      50
+Ni2+   Ni?     10
+Ni     Ni     100
+Ni     Ni?     10
+Pt2+   Pt2+   100
+Pt2+   Pt      50
+Pt2+   Pt?     10
+Pt     Pt     100
+Pt     Pt?     10
+Du     Du     100
+Du     Du?     10
