@@ -201,7 +201,7 @@ public class Fragment extends Molecule implements Immutable, Serializable
     }
 
     /**
-     * Method alias.  Indices are 1,2,...,n.  No checks.
+     * Method alias. 
      */
     public Fragment setAngle(int i, int j, int k, double theta)
     {
@@ -220,8 +220,6 @@ public class Fragment extends Molecule implements Immutable, Serializable
         return moveAtoms(atomMap2);
     }
 
-    /**
-     * Alias method.  Atom indices are 1, 2, ..., n.  No checks.
      */
     public Molecule setDihedral(ProtoTorsion protoTorsion, double theta)
     {

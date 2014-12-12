@@ -688,7 +688,7 @@ public class Molecule implements Immutable, Serializable
     }
 
     /**
-     * Alias method.  Atom indices are 1, 2, ..., n.  No checks.
+     * Alias method.  
      */
     public Molecule setDihedral(ProtoTorsion protoTorsion, double theta)
     {
@@ -876,7 +876,7 @@ public class Molecule implements Immutable, Serializable
     }
 
     /**
-    * Alias method.  Atom indices are 1, 2, ..., n.  No checks.
+    * Alias method.  
     */
     public Molecule set_sp2(Atom atom1, Atom atom2)
     {
