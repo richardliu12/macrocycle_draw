@@ -107,7 +107,8 @@ public class Atom implements Immutable, Serializable, Comparable<Atom>
         return Objects.hash(element, position, tinkerAtomType);
     }
 
-    public static final double TOLERANCE = 0.000001;
+    // tolerance can be added, but will destroy consistency with hash code
+    // public static final double TOLERANCE = 0.000000;
 
     /** 
      * Tests for object equality
@@ -127,10 +128,12 @@ public class Atom implements Immutable, Serializable, Comparable<Atom>
         if ( element == anotherAtom.element &&
              tinkerAtomType == anotherAtom.tinkerAtomType )
             {
-                if ( Math.abs(position.getX() - anotherAtom.position.getX()) < TOLERANCE &&
+              /*  if ( Math.abs(position.getX() - anotherAtom.position.getX()) < TOLERANCE &&
                      Math.abs(position.getY() - anotherAtom.position.getY()) < TOLERANCE &&
                      Math.abs(position.getZ() - anotherAtom.position.getZ()) < TOLERANCE    )
-                return true;
+             */
+            if ( Objects.equals(position, anotherAtom.position) )
+                 return true;
             }
         return false;
     }

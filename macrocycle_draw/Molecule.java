@@ -109,13 +109,11 @@ public class Molecule implements Immutable, Serializable
 
     /**
      * Factory method to create a new molecule by shifting this one to have its center at the origin.
-     * @return this minus the barycenter of this 
+     * @return this shifted by minus the barycenter of this 
      */
     public Molecule normalize()
     {
-        Vector3D barycenter = Vector3D.ZERO;
-        for (Atom a : contents) barycenter = barycenter.add(a.position);
-        barycenter = barycenter.scalarMultiply(1.0/contents.size());
+        Vector3D barycenter = this.getCentroid();
         return shift(barycenter.negate());
     }
 
@@ -494,6 +492,15 @@ public class Molecule implements Immutable, Serializable
      */
     public Molecule setDistance(Atom atom1, Atom atom2, double requestedDistance)
     {
+       Map<Atom,Atom> atomMap = setDistanceMap(atom1, atom2, requestedDistance);
+       return moveAtoms(atomMap); 
+    }
+
+    /**
+     * Creates an atom map for setDistance() methods.
+     */
+    protected Map<Atom,Atom> setDistanceMap(Atom atom1, Atom atom2, double requestedDistance)
+    {
         // determine which atoms have to be moved
         Set<Atom> toBeMoved = getHalfGraph(atom1, atom2);
 
@@ -515,7 +522,7 @@ public class Molecule implements Immutable, Serializable
                 Atom newAtom         = oldAtom.moveAtom(newPosition);
                 atomMap.put(oldAtom, newAtom);
             }
-       return moveAtoms(atomMap); 
+        return atomMap;
     }
 
     /**
@@ -535,6 +542,15 @@ public class Molecule implements Immutable, Serializable
      * @param theta rotation in degrees
      */
     public Molecule rotateAngle(Atom atom1, Atom atom2, Atom atom3, double theta)
+    {
+        Map<Atom,Atom> atomMap2 = rotateAngleMap(atom1, atom2, atom3, theta);
+        return moveAtoms(atomMap2);
+    }
+
+    /**
+    * Creates an atom map for rotateAngle() methods.
+    */
+    protected Map<Atom,Atom> rotateAngleMap(Atom atom1, Atom atom2, Atom atom3, double theta)
     {
         // figure out which atoms to move
         Set<Atom> toBeMoved = getHalfGraph(atom2, atom3);
@@ -571,8 +587,7 @@ public class Molecule implements Immutable, Serializable
                 atomMap2.put(a,a.moveAtom(newPosition));
             }
 
-        // create new Molecule
-        return moveAtoms(atomMap2);
+        return atomMap2;
     }
 
     /**
@@ -614,7 +629,16 @@ public class Molecule implements Immutable, Serializable
      */
     public Molecule setDihedral(AtomTorsion atomTorsion, double theta)
     {
-        // check that this AtomTorsion is the correct one for this Molecule
+        Map<Atom,Atom> atomMap2 = setDihedralMap(atomTorsion, theta);
+        return moveAtoms(atomMap2);
+    }
+
+    /**
+    * Creates an atom map for setDihedral() methods.
+    */
+    protected Map<Atom,Atom> setDihedralMap(AtomTorsion atomTorsion, double theta)
+    {
+         // check that this AtomTorsion is the correct one for this Molecule
         if ( atomTorsion.molecule != this )
             throw new IllegalArgumentException("this isn't the right Molecule for this AtomTorsion");
 
@@ -660,10 +684,12 @@ public class Molecule implements Immutable, Serializable
                 atomMap2.put(a, a.moveAtom(newPosition));
             }
 
-        // return new Molecule
-        return moveAtoms(atomMap2);
+        return atomMap2;
     }
 
+    /**
+     * Alias method.  Atom indices are 1, 2, ..., n.  No checks.
+     */
     public Molecule setDihedral(ProtoTorsion protoTorsion, double theta)
     {
         AtomTorsion atomTorsion = protoTorsion.getAtomTorsion(this);
@@ -849,6 +875,9 @@ public class Molecule implements Immutable, Serializable
         return returnMolecule;
     }
 
+    /**
+    * Alias method.  Atom indices are 1, 2, ..., n.  No checks.
+    */
     public Molecule set_sp2(Atom atom1, Atom atom2)
     {
         return set_sp2(atom1, atom2, true);

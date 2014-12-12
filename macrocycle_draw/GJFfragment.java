@@ -180,5 +180,9 @@ public class GJFfragment extends OutputFileFormat implements Immutable
             GJFfragment gjf = new GJFfragment("test.gjf");
             Fragment frag = Fragment.createFragment(gjf);
             System.out.println(frag);
-}
+            frag = frag.shift(new Vector3D(3,3,3));
+            System.out.println("\nShifting...\n\n" + frag);
+            frag = frag.setDistance(1,2,14);
+            System.out.println("\nStretching 1-2 bond...\n\n" + frag);
+        }
 }
