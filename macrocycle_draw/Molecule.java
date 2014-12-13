@@ -718,7 +718,22 @@ public class Molecule implements Immutable, Serializable
     {
         // note current bond length
         double currentLength = getDistance(atom1, atom2);
+        Map<Atom,Atom> newAtomMap = set_sp2_map(atom1, atom2, forceAngle);
+        Molecule rotatedMolecule = moveAtoms(newAtomMap);
 
+        int atom1number = getAtomNumber(atom1);
+        int atom2number = getAtomNumber(atom2);
+
+        Molecule returnMolecule = rotatedMolecule.setDistance(atom1number, atom2number, currentLength); 
+        return returnMolecule;
+    }
+
+    /**
+    * Returns an atom map for setting atom 1 to sp2 geometry.  Does NOT include
+    * bond length adjustment.
+    */
+    protected Map<Atom,Atom> set_sp2_map(Atom atom1, Atom atom2, boolean forceAngle)
+    {
         // get the neighbors of atom1
         // call them atom1alpha and atom1beta
         List<Atom> atom1neighbors = new LinkedList<>(getAdjacentAtoms(atom1));
@@ -859,28 +874,124 @@ public class Molecule implements Immutable, Serializable
                 if ( !oldAtom.equals(newAtom) )
                     newAtomMap.put(oldAtom, newAtom);
             }
-
-        Molecule rotatedMolecule = moveAtoms(newAtomMap);
-
-        
-        //for (Atom key : newAtomMap.keySet())
-        //    System.out.println(String.format("%s %s  :  %s %s", getAtomString(key), key, rotatedMolecule.getAtomString(newAtomMap.get(key)), newAtomMap.get(key)));
-        
-        // set bond length
-        Molecule returnMolecule = rotatedMolecule.setDistance(atom1number, atom2number, currentLength);
-        //System.out.println(returnMolecule.getAngle(atom1alphaNumber,atom1number,atom1betaNumber));
-        //System.out.println(returnMolecule.getAngle(atom1betaNumber,atom1number,atom2number));
-        //System.out.println(returnMolecule.getAngle(atom2number,atom1number,atom1alphaNumber));
-        
-        return returnMolecule;
+        return newAtomMap;
     }
-
+    
     /**
     * Alias method.  
     */
     public Molecule set_sp2(Atom atom1, Atom atom2)
     {
         return set_sp2(atom1, atom2, true);
+    }
+
+    /**
+     * Creates a new Molecule where atom2 and its subgraph have been moved to
+     * make atom1 sp3-hybridized (tetrahedral geometry).
+     * Note that the new center will be sp2, but could have distorted torsion angles.
+     * @param atom1 the atom to be adjusted to sp2
+     * @param atom2 the group to be moved
+     * @return a new Molecule with adjusted hybridization
+     */
+    public Molecule set_sp3(Atom atom1, Atom atom2)
+    {
+        // note current bond length
+        double currentLength = getDistance(atom1, atom2);
+        Map<Atom,Atom> newAtomMap = set_sp3_map(atom1, atom2);
+        Molecule rotatedMolecule = moveAtoms(newAtomMap);
+
+        int atom1number = getAtomNumber(atom1);
+        int atom2number = getAtomNumber(atom2);
+
+        Molecule returnMolecule = rotatedMolecule.setDistance(atom1number, atom2number, currentLength); 
+        return returnMolecule;
+    }
+
+    /**
+    * Returns an atom map for setting atom 1 to sp3 geometry.  Does NOT include
+    * bond length adjustment.
+    */
+    protected Map<Atom,Atom> set_sp3_map(Atom atom1, Atom atom2)
+    {
+        // get the neighbors of atom1
+        // call them atom1alpha, atom1beta, atom1gamma
+        List<Atom> atom1neighbors = new LinkedList<>(getAdjacentAtoms(atom1));
+        if ( atom1neighbors.size() != 4 )
+            throw new IllegalArgumentException("expected 3 neighbors for atom 1, found " + atom1neighbors.size());
+        else if ( ! atom1neighbors.contains(atom2) )
+            throw new IllegalArgumentException("atoms are not adjacent");
+        atom1neighbors.remove(atom2);
+              Atom atom1alpha = atom1neighbors.get(0);
+        Atom atom1beta = atom1neighbors.get(1);
+	    Atom atom1gamma = atom1neighbors.get(2);
+        int atom1alphaNumber = getAtomNumber(atom1alpha);
+        int atom1betaNumber = getAtomNumber(atom1beta);
+	    int atom1gammaNumber = getAtomNumber(atom1gamma);
+        int atom1number = getAtomNumber(atom1);
+        int atom2number = getAtomNumber(atom2);
+
+        Molecule newMolecule = this;
+
+        // translate atom1 to the origin
+        List<Vector3D> newPositions = new LinkedList<>();
+        for (Atom a : newMolecule.contents)
+            {
+                Vector3D oldPosition = a.position;
+                Vector3D newPosition = oldPosition.subtract(atom1.position);
+                newPositions.add(newPosition);
+            }
+
+        // get unit vectors
+        Vector3D atom1alphaPosition = newPositions.get(atom1alphaNumber-1).normalize();
+        Vector3D atom1betaPosition = newPositions.get(atom1betaNumber-1).normalize();
+	Vector3D atom1gammaPosition = newPositions.get(atom1gammaNumber-1).normalize();
+	Vector3D atom1atom2Position = newPositions.get(atom2number-1).normalize();
+
+        // get the negative sum of atom1alpha, atom1beta, atom1gamma
+        Vector3D targetPosition = atom1alphaPosition.add(atom1betaPosition.add(atom1gammaPosition));
+        targetPosition = targetPosition.negate();
+        Rotation fixRotation = new Rotation(atom1atom2Position, targetPosition);
+
+        // determine which atoms should be moved
+        Set<Integer> atomNumbersToMove = getHalfGraphNumbers(atom1, atom2);
+        List<Vector3D> newPositions2 = new LinkedList<>();
+
+        for (int i=0; i < newPositions.size(); i++)
+            {
+                Integer currentAtomNumber = Integer.valueOf(i+1);
+
+                if ( atomNumbersToMove.contains(currentAtomNumber) )
+                    {
+                        // rotate this atom
+                        Vector3D oldPosition = newPositions.get(i);
+                        Vector3D newPosition = fixRotation.applyTo(oldPosition);
+                        newPositions2.add(newPosition);
+                    }
+                else
+                    {
+                        // do not rotate this atom
+                        newPositions2.add( newPositions.get(i) );
+                    }
+            }
+
+        // undo translation
+        List<Vector3D> newPositions3 = new LinkedList<>();
+        for (Vector3D v : newPositions2)
+            newPositions3.add(v.add(atom1.position));
+
+        // create new atom map
+        Map<Atom,Atom> newAtomMap = new LinkedHashMap<>();
+        for (int i=0; i < contents.size(); i++)
+            {
+                Integer currentAtomNumber = Integer.valueOf(i+1);
+                if ( !atomNumbersToMove.contains(currentAtomNumber) )
+                    continue;
+                Atom oldAtom = contents.get(i);
+                Atom newAtom = oldAtom.moveAtom( newPositions3.get(i) );
+                if ( !oldAtom.equals(newAtom) )
+                    newAtomMap.put(oldAtom, newAtom);
+            }
+        return newAtomMap;
     }
 
     /**

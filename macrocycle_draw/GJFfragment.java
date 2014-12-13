@@ -184,5 +184,9 @@ public class GJFfragment extends OutputFileFormat implements Immutable
             System.out.println("\nShifting...\n\n" + frag);
             frag = frag.setDistance(1,2,14);
             System.out.println("\nStretching 1-2 bond...\n\n" + frag);
+            frag = frag.set_sp3(frag.getAtom(1), frag.getAtom(5));
+            System.out.println("\nSetting sp3 for C-Cl...\n\n" + frag);
+            MOL2InputFile file = new MOL2InputFile(frag);
+            file.write("test_mod.mol2");
         }
 }

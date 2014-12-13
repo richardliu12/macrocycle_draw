@@ -220,7 +220,6 @@ public class Fragment extends Molecule implements Immutable, Serializable
         return moveAtoms(atomMap2);
     }
 
-     */
     public Molecule setDihedral(ProtoTorsion protoTorsion, double theta)
     {
         AtomTorsion atomTorsion = protoTorsion.getAtomTorsion(this);
@@ -234,6 +233,59 @@ public class Fragment extends Molecule implements Immutable, Serializable
     public Molecule setDihedral(IndexTorsion indexTorsion, double theta)
     {
         return setDihedral(indexTorsion.getAtomTorsion(this), theta);
+    }
+
+    /**
+     * Creates a new Fragment where atom2 and its subgraph have been moved to
+     * make atom1 sp2-hybridized (bond angles set at 120 degrees).
+     * Note that the new center will be sp2, but could have distorted torsion angles.
+     * @param atom1 the atom to be adjusted to sp2
+     * @param atom2 the group to be moved
+     * @param forceAngle true if we want to force the atom1alpha-atom1-atom1beta angle to 120 (safe for non-prolines)
+     * @return a new Fragment with adjusted hybridization
+     */
+    public Fragment set_sp2(Atom atom1, Atom atom2, boolean forceAngle)
+    {
+        // note current bond length
+        double currentLength = getDistance(atom1, atom2);
+        Map<Atom,Atom> newAtomMap = set_sp2_map(atom1, atom2, forceAngle);
+        Fragment rotatedFragment = moveAtoms(newAtomMap);
+
+        int atom1number = getAtomNumber(atom1);
+        int atom2number = getAtomNumber(atom2);
+
+        Fragment returnFragment = rotatedFragment.setDistance(atom1number, atom2number, currentLength); 
+        return returnFragment;
+    }
+
+    /**
+    * Alias method.  
+    */
+    public Fragment set_sp2(Atom atom1, Atom atom2)
+    {
+        return set_sp2(atom1, atom2, true);
+    }
+
+    /**
+     * Creates a new Fragment where atom2 and its subgraph have been moved to
+     * make atom1 sp3-hybridized (tetrahedral geometry).
+     * Note that the new center will be sp2, but could have distorted torsion angles.
+     * @param atom1 the atom to be adjusted to sp2
+     * @param atom2 the group to be moved
+     * @return a new Fragment with adjusted hybridization
+     */
+    public Fragment set_sp3(Atom atom1, Atom atom2)
+    {
+        // note current bond length
+        double currentLength = getDistance(atom1, atom2);
+        Map<Atom,Atom> newAtomMap = set_sp3_map(atom1, atom2);
+        Fragment rotatedFragment = moveAtoms(newAtomMap);
+
+        int atom1number = getAtomNumber(atom1);
+        int atom2number = getAtomNumber(atom2);
+
+        Fragment returnFragment = rotatedFragment.setDistance(atom1number, atom2number, currentLength); 
+        return returnFragment;
     }
 
     /**
