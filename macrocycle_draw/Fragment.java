@@ -309,9 +309,23 @@ public class Fragment extends Molecule implements Immutable, Serializable
     @Override
     public boolean equals(Object obj)
     {
-        boolean superEquals = super.equals(obj);
-        Fragment fragment = (Fragment)obj;
-        return superEquals && Objects.equals(fragment.leftConnect, this.leftConnect) && Objects.equals(fragment.rightConnect, this.rightConnect) && Objects.equals(fragment.fragmentType, this.fragmentType) && Objects.equals(fragment.ureaCarbon, this.ureaCarbon);
+      	if ( obj == null )
+            return false;
+        if ( obj == this )
+            return true;
+        if ( !(obj instanceof Fragment) )
+            return false;
+
+        Molecule anotherMolecule = (Molecule)obj;
+        if ( this.name.equals(anotherMolecule.name) &&
+             this.contents.equals(anotherMolecule.contents) &&
+             this.connectivity.equals(anotherMolecule.connectivity) )
+        {   
+		Fragment fragment = (Fragment)obj;
+        	return Objects.equals(fragment.leftConnect, this.leftConnect) && Objects.equals(fragment.rightConnect, this.rightConnect) && Objects.equals(fragment.fragmentType, this.fragmentType) && Objects.equals(fragment.ureaCarbon, this.ureaCarbon);
+    	}
+	
+	return false;
     }
 
     /**
