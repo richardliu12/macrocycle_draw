@@ -23,6 +23,9 @@ public class Settings implements Immutable, Singleton
         /** current working directory */
         public static final String WORKING_DIRECTORY;
 
+        /** input file directory */
+        public static final String INPUT_DIRECTORY;
+
         /** the main class name */
         public static final String MAIN_CLASS;
 
@@ -115,6 +118,12 @@ public class Settings implements Immutable, Singleton
         if ( PLATFORM == Platform.DOS )
             temp = temp.replace("/","\\");
         WORKING_DIRECTORY = temp;
+
+        // for input directory
+        temp = WORKING_DIRECTORY + "input/";
+        if ( PLATFORM == Platform.DOS )
+            temp = temp.replace("/","\\");
+        INPUT_DIRECTORY = temp;
 
         // for TinkerMinimizationJobs
         //temp = WORKING_DIRECTORY + "tinker_minimization_jobs/";

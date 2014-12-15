@@ -114,6 +114,6 @@ public class GJFfile extends OutputFileFormat implements Immutable
     /** for testing */
     public static void main(String args[])
     {
-        GJFfragment gjf = new GJFfragment("test.gjf");
+        System.out.println(FragmentLibrary.DATABASE);
     }
 }
