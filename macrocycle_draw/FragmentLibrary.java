@@ -3,7 +3,10 @@ import java.util.*;
 import com.google.common.collect.*;
 
 /**
-* Holds and organizes all fragments.  Singleton class.
+* Holds and organizes all fragments.  All the pieces in a Catalyst are
+* called Fragments, and this Singleton reads all of those from the
+* input directory.  The entries are stored in a map called DATABASE,
+* and are sorted by fragment type.  Explanation courtesy of Prof. Kwan.
 *
 */
 public final class FragmentLibrary implements Singleton
@@ -11,10 +14,11 @@ public final class FragmentLibrary implements Singleton
     /** Do not try to instantiate this! */
     private FragmentLibrary() {throw new IllegalArgumentException("Not instantiable!");}
    
-    /** Fragment collection, sorted by type */
+    /** Fragment collection, sorted by type. */
     public static final ImmutableMap<FragmentType,List<Fragment>> DATABASE;
+    
     static{
-      // collections of fragments by type
+        // collections of fragments by type
         List<Fragment> ureaList = new ArrayList<>();
         List<Fragment> thioureaList = new ArrayList<>();
         List<Fragment> linkerList_1 = new ArrayList<>();
