@@ -398,7 +398,7 @@ public class Molecule implements Immutable, Serializable
     }
 
     /**
-     * Convenience method that returns atom numebrs instead of atoms.
+     * Convenience method that returns atom numbers instead of atoms.
      * @param atomNumber1 the atom number of the first atom (1, 2, ..., n)
      * @param atomNumber2 the atom number of the second atom (1, 2, ..., n)
      * @return the set of atom numbers on the atomNumber2 side
@@ -572,7 +572,6 @@ public class Molecule implements Immutable, Serializable
                 else if ( a == atom3 )
                     v3 = newPosition;
             }
-        
         // form the rotation axis and matrix
         Vector3D rotationAxis = Vector3D.crossProduct(v1, v3);
         Rotation rotation = new Rotation(rotationAxis, Math.toRadians(theta));

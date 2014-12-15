@@ -73,7 +73,6 @@ public class Fragment extends Molecule implements Immutable, Serializable
      * @param atomMap a map from old atoms to new atoms (does not have to include all atoms)
      * @return a Fragment
      */
-     
     public Fragment moveAtoms(Map<Atom,Atom> atomMap)
     {
         Molecule molecule = new Molecule(name, contents, connectivity);
@@ -94,7 +93,7 @@ public class Fragment extends Molecule implements Immutable, Serializable
     }
 
     /**
-     * Factory method to create a new molecule by transforming this one.
+     * Factory method to create a new Fragment by transforming this one.
      * The rotation is applied before the translation.  
      * @param rot a three-dimensional rotation that we apply to the Atoms in this to get the Atoms in the output
      * @param shift a vector that we add to the positions of the Atoms in this to get the positions of the Atoms in the output
@@ -147,7 +146,7 @@ public class Fragment extends Molecule implements Immutable, Serializable
      * @param atom1 this atom will be held fixed
      * @param atom2 this atom and anything connected to it will be moved
      * @param requestedDistance the requested distance in Angstroms
-     * @return a new Molecule containing the same connectivity but new positions
+     * @return a new Fragment containing the same connectivity but new positions
      */
     public Fragment setDistance(Atom atom1, Atom atom2, double requestedDistance)
     {
@@ -170,6 +169,7 @@ public class Fragment extends Molecule implements Immutable, Serializable
      * @param atom2 will not be moved
      * @param atom3 will be moved
      * @param theta rotation in degrees
+     * @return this rotated
      */
     public Fragment rotateAngle(Atom atom1, Atom atom2, Atom atom3, double theta)
     {
@@ -187,7 +187,7 @@ public class Fragment extends Molecule implements Immutable, Serializable
 
     /**
      * Set the atom1-atom2-atom3 angle to theta degrees, moving atom3 and its subgraph only.
-     * New molecule returned.  No checks.
+     * New Fragment returned.  No checks.
      * @param atom1 not moved
      * @param atom2 not moved
      * @param atom3 moved
@@ -209,18 +209,18 @@ public class Fragment extends Molecule implements Immutable, Serializable
     }
 
     /**
-     * Returns a new Molecule with a rotated dihedral.
+     * Returns a new Fragment with a rotated dihedral.
      * Note that the old AtomTorsion will no longer point to the new Molecule.
      * @param theta the desired dihedral angle in degrees
-     * @return the new molecule
+     * @return the new Fragment
      */
-    public Molecule setDihedral(AtomTorsion atomTorsion, double theta)
+    public Fragment setDihedral(AtomTorsion atomTorsion, double theta)
     {
         Map<Atom,Atom> atomMap2 = setDihedralMap(atomTorsion, theta);
         return moveAtoms(atomMap2);
     }
 
-    public Molecule setDihedral(ProtoTorsion protoTorsion, double theta)
+    public Fragment setDihedral(ProtoTorsion protoTorsion, double theta)
     {
         AtomTorsion atomTorsion = protoTorsion.getAtomTorsion(this);
         return setDihedral(atomTorsion, theta);
