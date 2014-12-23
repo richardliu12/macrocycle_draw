@@ -26,6 +26,12 @@ public class GJFfragment extends OutputFileFormat implements Immutable
     /** The FragmentType of this fragment. */
     public FragmentType fragmentType;
 
+    /** A list of chiral atoms. */
+    public final ImmutableList<Atom> chiralAtoms;
+
+    /** A graph of rotatable bonds. */
+    protected SimpleWeightedGraph<Atom,DefaultWeightedEdge> rotatableBonds;
+ 
     /**
      * Reads the geometry and connectivity, as well as metadata.
      * @param filename the location of the gjf file
@@ -44,6 +50,7 @@ public class GJFfragment extends OutputFileFormat implements Immutable
         int leftConnectAtomNumber = 0;
         int rightConnectAtomNumber = 0;
         int ureaCarbonAtomNumber = 0;
+        List<Integer> chiralAtomNumbers = Collections.<Integer>emptyList();
 
         for (List<String> line : fileContents)
             {
@@ -64,7 +71,10 @@ public class GJFfragment extends OutputFileFormat implements Immutable
                 if ( blanks == 1 )
                     {   
                         for (String s : line)
-                        {   
+                        {  
+                            if ( s.split("@").length <= 2 )
+                                continue;
+                                
                             if ( s.split("@")[1].toLowerCase().equals("left_connect") )
                             {
                                 if ( s.split("@").length != 3 )
@@ -105,6 +115,26 @@ public class GJFfragment extends OutputFileFormat implements Immutable
                                         break;
                                     default: throw new IllegalArgumentException("improper fragment_type in " + filename + ":\n" + line.toString());
                                 }
+                            }
+                            else if ( s.split("@")[1].toLowerCase().equals("chiral_atom") )
+                            {
+                               if ( s.split("@").length < 3 ) 
+                                   throw new IllegalArgumentException("improper chiral_atom specification in " + filename + ":\n" + line.toString());
+                                else
+                                    for ( int i = 2; i < s.split("@").length; i++)
+                                        chiralAtomNumbers.add(Integer.parseInt(s.split("@")[i]));
+                            }
+                            else if ( s.split("@")[1].toLowerCase().equals("rotatable_bond") )
+                            {
+                               if ( s.split("@").length < 4 )
+                                   throw new IllegalArgumentException("improper rotatable_bond specification in " + filename + ":\n" + line.toString());
+                                else 
+                                    for ( int i = 2; i+1 < s.split("@").length; i++)
+                                    {
+                                        int atomNumber1 = Integer.parseInt(s.split("@")[i]);
+                                        int atomNumber2 = Integer.parseInt(s.split("@")[i+1]);
+                                        rotatableBonds.addEdge(contents.get(atomNumber1), contents.get(atomNumber2));
+                                    }
                             }
                         }
                         continue;
@@ -160,7 +190,6 @@ public class GJFfragment extends OutputFileFormat implements Immutable
                         DefaultWeightedEdge thisEdge = connectivity.addEdge(fromAtom, toAtom);
                         connectivity.setEdgeWeight(thisEdge, bondOrder);
                     }
-
             }
 
         // create the molecule, label atoms with metadata
@@ -170,23 +199,31 @@ public class GJFfragment extends OutputFileFormat implements Immutable
         if (ureaCarbonAtomNumber != 0)
             ureaCarbon = molecule.getAtom(ureaCarbonAtomNumber);
         else
-            ureaCarbon = new Atom("Q", new Vector3D(0,0,0), -1);
+            ureaCarbon = new Atom("Q", new Vector3D(0,0,0), 0);
+        
+        List<Atom> tempChiralAtoms = Collections.<Atom>emptyList();
+        for ( int i : chiralAtomNumbers )
+            tempChiralAtoms.add(molecule.getAtom(i));
+        chiralAtoms = ImmutableList.copyOf(tempChiralAtoms);
     }
         /**
         * For testing.
         */
         public static void main(String[] args)
         {
-            GJFfragment gjf = new GJFfragment("test.gjf");
-            Fragment frag = Fragment.createFragment(gjf);
-            System.out.println(frag);
-            frag = frag.shift(new Vector3D(3,3,3));
-            System.out.println("\nShifting...\n\n" + frag);
-            frag = frag.setDistance(1,2,14);
-            System.out.println("\nStretching 1-2 bond...\n\n" + frag);
-            frag = frag.set_sp3(frag.getAtom(1), frag.getAtom(5));
-            System.out.println("\nSetting sp3 for C-Cl...\n\n" + frag);
-            MOL2InputFile file = new MOL2InputFile(frag);
+            GJFfragment temparyl = new GJFfragment("aryl.gjf");
+            Fragment aryl = Fragment.createFragment(temparyl);
+            GJFfragment temptleucine = new GJFfragment("tleucine.gjf");
+            Fragment tleucine = Fragment.createFragment(temptleucine);
+            GJFfragment tempurea = new GJFfragment("urea.gjf");
+            Fragment urea = Fragment.createFragment(tempurea);
+            GJFfragment temppyrrolidine = new GJFfragment("pyrrolidine.gjf");
+            Fragment pyrrolidine = Fragment.createFragment(temppyrrolidine);
+            Catalyst cat = new Catalyst(pyrrolidine);
+            cat = cat.addRight(tleucine);
+            cat = cat.addRight(urea);
+            cat = cat.addRight(aryl);
+            MOL2InputFile file = new MOL2InputFile(cat);
             file.write("test_mod.mol2");
         }
 }

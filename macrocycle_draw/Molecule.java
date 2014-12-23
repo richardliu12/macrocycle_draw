@@ -915,7 +915,7 @@ public class Molecule implements Immutable, Serializable
         // get the neighbors of atom1
         // call them atom1alpha, atom1beta, atom1gamma
         List<Atom> atom1neighbors = new LinkedList<>(getAdjacentAtoms(atom1));
-        if ( atom1neighbors.size() != 4 )
+        if ( atom1neighbors.size() != 3 )
             throw new IllegalArgumentException("expected 3 neighbors for atom 1, found " + atom1neighbors.size());
         else if ( ! atom1neighbors.contains(atom2) )
             throw new IllegalArgumentException("atoms are not adjacent");

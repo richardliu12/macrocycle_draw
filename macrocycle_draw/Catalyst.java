@@ -15,6 +15,9 @@ public class Catalyst extends Molecule implements Immutable, Serializable
 {
     public static final long serialVersionUID = 1L;
 
+    // the default bond length for newly formed bonds between fragments
+    final double BOND_LENGTH = 1.35;
+
     /** Ordered list of all Fragments in this Catalyst */
     public final ImmutableList<Fragment> fragmentList;
 
@@ -106,14 +109,14 @@ public class Catalyst extends Molecule implements Immutable, Serializable
 
             SimpleWeightedGraph<Atom, DefaultWeightedEdge> newC = (SimpleWeightedGraph<Atom, DefaultWeightedEdge>)fragment.connectivity.clone();
             Graphs.addGraph(newC,connectivity);
-            Graphs.addEdge(newC, this.fragmentList.get(0).rightConnect,fragment.leftConnect, 1.0);
+            Graphs.addEdge(newC, this.fragmentList.get(this.fragmentList.size()-1).rightConnect,fragment.leftConnect, 1.0);
 
             List<Fragment> newFragmentList = new ArrayList<Fragment>();
             newFragmentList.addAll(fragmentList);
             newFragmentList.add(fragment);
 
             Catalyst returnCatalyst = new Catalyst(newName, newContents, newC, newFragmentList);
-            return returnCatalyst.geometryCorrect(this.fragmentList.get(0).rightConnect, fragment.leftConnect);
+            return returnCatalyst.geometryCorrect(this.fragmentList.get(this.fragmentList.size()-1).rightConnect, fragment.leftConnect);
         }
     }
 
@@ -125,17 +128,17 @@ public class Catalyst extends Molecule implements Immutable, Serializable
      */
      public Catalyst geometryCorrect(Atom atom1, Atom atom2)
      {
-        final double BOND_LENGTH = 1.35;
         int atomNumber1 = getAtomNumber(atom1);
         int atomNumber2 = getAtomNumber(atom2);
 
+        // obtain the set of atoms adjacent to atom 1, not including atom 2
         Set<Atom> adjSet1 = getAdjacentAtoms(atom1);
         adjSet1.remove(atom2);
         List<Atom> adj1 = new LinkedList<Atom>(adjSet1);
 
-        // correct atom1
     	Catalyst newCatalyst1;
 
+        // determine how many bonds to atom 1, then correct geometry appropriately
         switch(adj1.size())
         {
             case 3: newCatalyst1 = set_sp3(atom1, atom2);
@@ -144,10 +147,10 @@ public class Catalyst extends Molecule implements Immutable, Serializable
                 break;
             case 1: newCatalyst1 = setAngle(adj1.get(0), atom1, atom2, 120);
                 break;
-            default: throw new IllegalArgumentException("Atom has too many or too few bonds! \n" + atom1.toString());
+            default: throw new IllegalArgumentException("Atom has too many or too few bonds! (" + adj1.size() + ") \n" + atom1.toString());
         }
 
-        // find moved atoms
+        // find moved atoms and repeat procedure for atom 2
         atom1 = newCatalyst1.getAtom(atomNumber1);
         atom2 = newCatalyst1.getAtom(atomNumber2);
 
@@ -155,7 +158,6 @@ public class Catalyst extends Molecule implements Immutable, Serializable
         adjSet2.remove(atom1);
         List<Atom> adj2 = new LinkedList<Atom>(adjSet2);
 
-        // correct atom2
     	Catalyst newCatalyst2;
 
         switch(adj2.size())
@@ -166,7 +168,8 @@ public class Catalyst extends Molecule implements Immutable, Serializable
                 break;
             case 1: newCatalyst2 = newCatalyst1.setAngle(adj2.get(0), atom2, atom1, 120);
                 break;
-            default: throw new IllegalArgumentException("Atom has too many or too few bonds! \n" + atom1.toString());
+   
+            default: throw new IllegalArgumentException("Atom has too many or too few bonds! (" + adj2.size() +") \n" + atom1.toString());
         }
     
         // correct distance
@@ -381,11 +384,11 @@ public class Catalyst extends Molecule implements Immutable, Serializable
         if ( !(obj instanceof Catalyst) )
             return false;
 
-        Molecule anotherMolecule = (Molecule)obj;
-	    Fragment anotherFragment = (Fragment)obj;
-        if ( this.name.equals(anotherMolecule.name) &&
-             this.contents.equals(anotherMolecule.contents) &&
-             this.connectivity.equals(anotherMolecule.connectivity) )
+        Catalyst anotherCatalyst = (Catalyst)obj;
+        if ( this.name.equals(anotherCatalyst.name) &&
+             this.contents.equals(anotherCatalyst.contents) &&
+             this.connectivity.equals(anotherCatalyst.connectivity) && 
+             this.fragmentList.equals(anotherCatalyst.fragmentList))
             return true;
         return false;
     }

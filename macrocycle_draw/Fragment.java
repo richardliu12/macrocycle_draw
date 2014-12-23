@@ -25,8 +25,14 @@ public class Fragment extends Molecule implements Immutable, Serializable
     public final Atom ureaCarbon;
 
     /** The FragmentType of this fragment. */
-    public FragmentType fragmentType;
+    public final FragmentType fragmentType;
 
+    /** A list of chiral atoms. */
+    public final ImmutableList<Atom> chiralAtoms;
+
+    /** A list of rotatable bonds. */
+    public final SimpleWeightedGraph<Atom,DefaultWeightedEdge> rotatableBonds;
+    
     /** 
     * Factory method to construct Fragment from GJFFragment. 
     * @param fragmentFile a GJFfragment read from a .gjf metafile
@@ -42,8 +48,10 @@ public class Fragment extends Molecule implements Immutable, Serializable
         Atom rightConnect = fragmentFile.rightConnect;
         Atom ureaCarbon = fragmentFile.ureaCarbon;
         FragmentType fragmentType = fragmentFile.fragmentType;
+        List<Atom> chiralAtoms = fragmentFile.chiralAtoms;
+        SimpleWeightedGraph<Atom,DefaultWeightedEdge> rotatableBonds = fragmentFile.rotatableBonds;
 
-        return new Fragment(name, contents, connectivity, leftConnect, rightConnect, ureaCarbon, fragmentType);
+        return new Fragment(name, contents, connectivity, leftConnect, rightConnect, ureaCarbon, fragmentType, chiralAtoms, rotatableBonds);
     }
 
     /**
@@ -55,16 +63,20 @@ public class Fragment extends Molecule implements Immutable, Serializable
     * @param rightConnect
     * @param ureaCarbon the (thio)urea carbon, if any
     * @param fragmentType
+    * @param chiralAtoms
+    * @param rotatableBonds
     * @return a Fragment
     */
 
-    private Fragment(String name, List<Atom> contents, SimpleWeightedGraph<Atom,DefaultWeightedEdge> connectivity, Atom leftConnect, Atom rightConnect, Atom ureaCarbon, FragmentType fragmentType)
+    private Fragment(String name, List<Atom> contents, SimpleWeightedGraph<Atom,DefaultWeightedEdge> connectivity, Atom leftConnect, Atom rightConnect, Atom ureaCarbon, FragmentType fragmentType, List<Atom> chiralAtoms, SimpleWeightedGraph<Atom,DefaultWeightedEdge> rotatableBonds)
     {
         super(name, contents, connectivity);
         this.leftConnect = leftConnect;
         this.rightConnect = rightConnect;
         this.ureaCarbon = ureaCarbon;
         this.fragmentType = fragmentType;
+        this.chiralAtoms = ImmutableList.copyOf(chiralAtoms);
+        this.rotatableBonds = rotatableBonds;
     }
 
     /**
@@ -81,7 +93,6 @@ public class Fragment extends Molecule implements Immutable, Serializable
         Atom newRightConnect = this.rightConnect;
         Atom newUreaCarbon = this.ureaCarbon;
         
-        List<Atom> newContents = new LinkedList<Atom>();
         if ( atomMap.containsKey(this.leftConnect) )
                     newLeftConnect = atomMap.get(this.leftConnect);
         if ( atomMap.containsKey(this.rightConnect) )
@@ -89,7 +100,7 @@ public class Fragment extends Molecule implements Immutable, Serializable
         if ( atomMap.containsKey(this.ureaCarbon) )
                     newUreaCarbon = atomMap.get(this.ureaCarbon);
 
-        return new Fragment(newMolecule.name, newMolecule.contents, newMolecule.connectivity, newLeftConnect, newRightConnect, newUreaCarbon, this.fragmentType);
+        return new Fragment(newMolecule.name, newMolecule.contents, newMolecule.connectivity, newLeftConnect, newRightConnect, newUreaCarbon, this.fragmentType, newChiralAtoms, newRotatableBonds);
     }
 
     /**
@@ -107,7 +118,7 @@ public class Fragment extends Molecule implements Immutable, Serializable
         Atom newRightConnect = this.rightConnect.transform(rot,shift);
         Atom newUreaCarbon = this.ureaCarbon.transform(rot,shift);
         
-        return new Fragment(newMolecule.name, newMolecule.contents, newMolecule.connectivity, newLeftConnect, newRightConnect, newUreaCarbon, this.fragmentType);
+        return new Fragment(newMolecule.name, newMolecule.contents, newMolecule.connectivity, newLeftConnect, newRightConnect, newUreaCarbon, this.fragmentType, newChiralAtoms, new RotatableBonds);
     }
 
     /**
@@ -136,7 +147,7 @@ public class Fragment extends Molecule implements Immutable, Serializable
     */
     public Fragment newFragmentType(FragmentType ftype)
     {
-        return new Fragment(name, contents, connectivity, leftConnect, rightConnect, ureaCarbon, ftype);
+        return new Fragment(name, contents, connectivity, leftConnect, rightConnect, ureaCarbon, ftype, chiralAtoms, rotatableBonds);
     }
 
     /**
@@ -316,15 +327,15 @@ public class Fragment extends Molecule implements Immutable, Serializable
         if ( !(obj instanceof Fragment) )
             return false;
 
-        Molecule anotherMolecule = (Molecule)obj;
-        if ( this.name.equals(anotherMolecule.name) &&
-             this.contents.equals(anotherMolecule.contents) &&
-             this.connectivity.equals(anotherMolecule.connectivity) )
-        {   
-		Fragment fragment = (Fragment)obj;
-        	return Objects.equals(fragment.leftConnect, this.leftConnect) && Objects.equals(fragment.rightConnect, this.rightConnect) && Objects.equals(fragment.fragmentType, this.fragmentType) && Objects.equals(fragment.ureaCarbon, this.ureaCarbon);
-    	}
-	
+        Fragment fragment = (Fragment)obj;
+        if ( this.name.equals(fragment.name) &&
+             this.contents.equals(fragment.contents) &&
+             this.connectivity.equals(fragment.connectivity) )
+           	return Objects.equals(fragment.leftConnect, this.leftConnect) &&
+            Objects.equals(fragment.rightConnect, this.rightConnect) &&
+            Objects.equals(fragment.fragmentType, this.fragmentType) &&
+            Objects.equals(fragment.ureaCarbon, this.ureaCarbon);
+    
 	return false;
     }
 
