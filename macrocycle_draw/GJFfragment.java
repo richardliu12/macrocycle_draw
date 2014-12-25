@@ -51,6 +51,7 @@ public class GJFfragment extends OutputFileFormat implements Immutable
         int rightConnectAtomNumber = 0;
         int ureaCarbonAtomNumber = 0;
         List<Integer> chiralAtomNumbers = Collections.<Integer>emptyList();
+        SimpleWeightedGraph<Integer,DefaultWeightedEdge> rotatableBondIndices = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         for (List<String> line : fileContents)
             {
@@ -131,9 +132,12 @@ public class GJFfragment extends OutputFileFormat implements Immutable
                                 else 
                                     for ( int i = 2; i+1 < s.split("@").length; i++)
                                     {
-                                        int atomNumber1 = Integer.parseInt(s.split("@")[i]);
-                                        int atomNumber2 = Integer.parseInt(s.split("@")[i+1]);
-                                        rotatableBonds.addEdge(contents.get(atomNumber1), contents.get(atomNumber2));
+                                        int atomNumber1 = Integer.parseInt(s.split("@")[i])-1;
+                                        int atomNumber2 = Integer.parseInt(s.split("@")[i+1])-1;
+                                        
+                                        rotatableBondIndices.addVertex(atomNumber1);
+                                        rotatableBondIndices.addVertex(atomNumber2);
+                                        rotatableBondIndices.addEdge(atomNumber1,atomNumber2);
                                     }
                             }
                         }
@@ -205,25 +209,22 @@ public class GJFfragment extends OutputFileFormat implements Immutable
         for ( int i : chiralAtomNumbers )
             tempChiralAtoms.add(molecule.getAtom(i));
         chiralAtoms = ImmutableList.copyOf(tempChiralAtoms);
+        
+        for ( int atomNumber : rotatableBondIndices.vertexSet() )
+            rotatableBonds.addVertex(contents.get(atomNumber));
+        for ( DefaultWeightedEdge e : rotatableBondIndices.edgeSet() )
+            {
+                int atomNumber1 = rotatableBondIndices.getEdgeSource(e);
+                int atomNumber2 = rotatableBondIndices.getEdgeTarget(e);
+                rotatableBonds.addEdge(contents.get(atomNumber1), contents.get(atomNumber2));
+            }                    
     }
         /**
         * For testing.
         */
         public static void main(String[] args)
         {
-            GJFfragment temparyl = new GJFfragment("aryl.gjf");
-            Fragment aryl = Fragment.createFragment(temparyl);
-            GJFfragment temptleucine = new GJFfragment("tleucine.gjf");
-            Fragment tleucine = Fragment.createFragment(temptleucine);
-            GJFfragment tempurea = new GJFfragment("urea.gjf");
-            Fragment urea = Fragment.createFragment(tempurea);
-            GJFfragment temppyrrolidine = new GJFfragment("pyrrolidine.gjf");
+            GJFfragment temppyrrolidine = new GJFfragment("test.gjf");
             Fragment pyrrolidine = Fragment.createFragment(temppyrrolidine);
-            Catalyst cat = new Catalyst(pyrrolidine);
-            cat = cat.addRight(tleucine);
-            cat = cat.addRight(urea);
-            cat = cat.addRight(aryl);
-            MOL2InputFile file = new MOL2InputFile(cat);
-            file.write("test_mod.mol2");
         }
 }

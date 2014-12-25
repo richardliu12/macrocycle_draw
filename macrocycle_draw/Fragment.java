@@ -100,6 +100,30 @@ public class Fragment extends Molecule implements Immutable, Serializable
         if ( atomMap.containsKey(this.ureaCarbon) )
                     newUreaCarbon = atomMap.get(this.ureaCarbon);
 
+        List<Atom> newChiralAtoms = Collections.<Atom>emptyList();
+        for ( Atom atom : chiralAtoms )
+            {
+                if ( atomMap.containsKey(atom) )
+                    newChiralAtoms.add(atomMap.get(atom));
+            }
+
+         SimpleWeightedGraph<Atom,DefaultWeightedEdge> newRotatableBonds = new SimpleWeightedGraph<Atom,DefaultWeightedEdge>(DefaultWeightedEdge.class);
+        for ( Atom atom : rotatableBonds.vertexSet() )
+            if ( atomMap.containsKey(atom) )
+                newRotatableBonds.addVertex(atomMap.get(atom));
+
+        for ( DefaultWeightedEdge e : rotatableBonds.edgeSet() )
+            {
+                Atom fromAtom = connectivity.getEdgeSource(e);
+                Atom toAtom = connectivity.getEdgeTarget(e);
+
+                if ( atomMap.containsKey(fromAtom) )
+                    fromAtom = atomMap.get(fromAtom);
+                if ( atomMap.containsKey(toAtom) )
+                    toAtom = atomMap.get(toAtom);
+
+                newRotatableBonds.addEdge(fromAtom,toAtom);
+            }
         return new Fragment(newMolecule.name, newMolecule.contents, newMolecule.connectivity, newLeftConnect, newRightConnect, newUreaCarbon, this.fragmentType, newChiralAtoms, newRotatableBonds);
     }
 
@@ -118,7 +142,26 @@ public class Fragment extends Molecule implements Immutable, Serializable
         Atom newRightConnect = this.rightConnect.transform(rot,shift);
         Atom newUreaCarbon = this.ureaCarbon.transform(rot,shift);
         
-        return new Fragment(newMolecule.name, newMolecule.contents, newMolecule.connectivity, newLeftConnect, newRightConnect, newUreaCarbon, this.fragmentType, newChiralAtoms, new RotatableBonds);
+        List<Atom> newChiralAtoms = Collections.<Atom>emptyList();
+        for ( Atom atom : chiralAtoms ) 
+            newChiralAtoms.add(atom.transform(rot,shift));
+
+        SimpleWeightedGraph<Atom,DefaultWeightedEdge> newRotatableBonds = new SimpleWeightedGraph<Atom,DefaultWeightedEdge>(DefaultWeightedEdge.class);
+        for ( Atom atom : rotatableBonds.vertexSet() )
+             newRotatableBonds.addVertex(atom.transform(rot,shift));
+
+        for ( DefaultWeightedEdge e : rotatableBonds.edgeSet() )
+            {
+                Atom fromAtom = connectivity.getEdgeSource(e);
+                Atom toAtom = connectivity.getEdgeTarget(e);
+
+                fromAtom = fromAtom.transform(rot,shift);
+                toAtom = toAtom.transform(rot,shift);
+
+                newRotatableBonds.addEdge(fromAtom,toAtom);
+            }
+ 
+        return new Fragment(newMolecule.name, newMolecule.contents, newMolecule.connectivity, newLeftConnect, newRightConnect, newUreaCarbon, this.fragmentType, newChiralAtoms, newRotatableBonds);
     }
 
     /**
