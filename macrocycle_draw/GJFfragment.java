@@ -50,7 +50,7 @@ public class GJFfragment extends OutputFileFormat implements Immutable
         int leftConnectAtomNumber = 0;
         int rightConnectAtomNumber = 0;
         int ureaCarbonAtomNumber = 0;
-        List<Integer> chiralAtomNumbers = Collections.<Integer>emptyList();
+        List<Integer> chiralAtomNumbers = new ArrayList<>();
         SimpleWeightedGraph<Integer,DefaultWeightedEdge> rotatableBondIndices = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         for (List<String> line : fileContents)
@@ -205,11 +205,12 @@ public class GJFfragment extends OutputFileFormat implements Immutable
         else
             ureaCarbon = new Atom("Q", new Vector3D(0,0,0), 0);
         
-        List<Atom> tempChiralAtoms = Collections.<Atom>emptyList();
+        List<Atom> tempChiralAtoms = new ArrayList<>();
         for ( int i : chiralAtomNumbers )
             tempChiralAtoms.add(molecule.getAtom(i));
         chiralAtoms = ImmutableList.copyOf(tempChiralAtoms);
         
+        rotatableBonds = new SimpleWeightedGraph<Atom,DefaultWeightedEdge>(DefaultWeightedEdge.class);
         for ( int atomNumber : rotatableBondIndices.vertexSet() )
             rotatableBonds.addVertex(contents.get(atomNumber));
         for ( DefaultWeightedEdge e : rotatableBondIndices.edgeSet() )
