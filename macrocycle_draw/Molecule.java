@@ -915,8 +915,8 @@ public class Molecule implements Immutable, Serializable
         // get the neighbors of atom1
         // call them atom1alpha, atom1beta, atom1gamma
         List<Atom> atom1neighbors = new LinkedList<>(getAdjacentAtoms(atom1));
-        if ( atom1neighbors.size() != 3 )
-            throw new IllegalArgumentException("expected 3 neighbors for atom 1, found " + atom1neighbors.size());
+        if ( atom1neighbors.size() != 4 )
+            throw new IllegalArgumentException("expected 4 neighbors for atom 1, found " + atom1neighbors.size());
         else if ( ! atom1neighbors.contains(atom2) )
             throw new IllegalArgumentException("atoms are not adjacent");
         atom1neighbors.remove(atom2);
@@ -1385,6 +1385,17 @@ public class Molecule implements Immutable, Serializable
         RMSD = Math.sqrt(RMSD);
         return RMSD;
     }
+
+    /**
+     * Creates an atom map that matches atoms to new ones by index.  For instance
+     * this is useful if you want to do operations only on the molecule part of
+     * a class, then rectify the contents of the class to match the product.
+     * @param newMolecule a molecule with the same number of atoms,
+                indexed in the same order
+     * @return an atom map
+     */
+     public Map<Atom,Atom> matchMap(Molecule newMolcule)
+     {
 
     /**
      * Superimposes two molecules based on a list of atom numbers.

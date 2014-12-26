@@ -225,22 +225,30 @@ public class GJFfragment extends OutputFileFormat implements Immutable
         */
         public static void main(String[] args)
         {
-            GJFfragment g1 = new GJFfragment("test.gjf");
+            GJFfragment g1 = new GJFfragment("urea.gjf");
             Fragment f1 = Fragment.createFragment(g1);
-            GJFfragment g2 = new GJFfragment("test2.gjf");
+            GJFfragment g2 = new GJFfragment("aryl.gjf");
             Fragment f2 = Fragment.createFragment(g2);
-            GJFfragment g3 = new GJFfragment("test3.gjf");
+            GJFfragment g3 = new GJFfragment("link.gjf");
             Fragment f3 = Fragment.createFragment(g3);
 
             Catalyst cat = new Catalyst(f1);
-            cat = cat.addLeft(f2);
+            cat = cat.addRight(f2);
             cat = cat.addRight(f3);
-            System.out.println(cat.getTorsions());
-            System.out.println(cat.getOPLSenergy());
+
+            GJFfragment g4 = new GJFfragment("urea.gjf");
+            Fragment f4 = Fragment.createFragment(g1);
+            GJFfragment g5 = new GJFfragment("aryl.gjf");
+            Fragment f5 = Fragment.createFragment(g2);
+            GJFfragment g6 = new GJFfragment("link.gjf");
+            Fragment f6 = Fragment.createFragment(g3);
+
+            cat = cat.addRight(f4);
+            cat = cat.addRight(f5);
+            cat = cat.addRight(f6);
 
             Molecule cyc = MonteCarlo.cyclize(cat, cat.getTorsions(), cat.getAtomNumber(cat.getLeftConnect()), cat.getAtomNumber(cat.getRightConnect()));
             MOL2InputFile m = new MOL2InputFile(cyc);
             m.write("test_join.mol2");
-
         }
 }
