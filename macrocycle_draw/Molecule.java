@@ -1394,8 +1394,16 @@ public class Molecule implements Immutable, Serializable
                 indexed in the same order
      * @return an atom map
      */
-     public Map<Atom,Atom> matchMap(Molecule newMolcule)
+     public Map<Atom,Atom> matchMap(Molecule newMolecule)
      {
+        Map<Atom,Atom> returnMap = new HashMap<>();
+        if ( this.contents.size() != newMolecule.contents.size())
+            throw new IllegalArgumentException("Sizes of molecules do not match!");
+        for ( int i = 0; i < this.contents.size(); i++ )
+            returnMap.put(this.getAtom(i+1), newMolecule.getAtom(i+1));
+
+        return returnMap;
+     }
 
     /**
      * Superimposes two molecules based on a list of atom numbers.

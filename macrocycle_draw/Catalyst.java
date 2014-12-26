@@ -102,9 +102,24 @@ public class Catalyst extends Molecule implements Immutable, Serializable
                         returnTorsions.add(IndexTorsion.createIndexTorsion(getAtomNumber(fromAtomNeighbors.get(0)), getAtomNumber(fromAtom), getAtomNumber(toAtom), getAtomNumber(toAtomNeighbors.get(0)), this));
                 }
         }
-
         return returnTorsions;
     }
+   
+    /**
+     * Cyclization method.  Returns a cyclized version of this catalyst.
+     */
+     public Catalyst cyclize()
+     {
+         Molecule m = MonteCarlo.cyclize(this, this.getTorsions(), getAtomNumber(this.getLeftConnect()), getAtomNumber(this.getRightConnect()));
+         Map<Atom,Atom> atomMap = this.matchMap(m);
+         
+         // create the new bond
+         DefaultWeightedEdge e = connectivity.addEdge(this.getLeftConnect(), this.getRightConnect());
+         connectivity.setEdgeWeight(e, 1);
+
+         return this.moveAtoms(atomMap);
+     }
+
     /** 
      * Factory method that returns a copy of the Catalyst with fragment appended on left.
      * The catalyst left connection atom is connected to the fragment's right connection

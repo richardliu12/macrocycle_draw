@@ -247,8 +247,9 @@ public class GJFfragment extends OutputFileFormat implements Immutable
             cat = cat.addRight(f5);
             cat = cat.addRight(f6);
 
-            Molecule cyc = MonteCarlo.cyclize(cat, cat.getTorsions(), cat.getAtomNumber(cat.getLeftConnect()), cat.getAtomNumber(cat.getRightConnect()));
-            MOL2InputFile m = new MOL2InputFile(cyc);
+            cat = cat.cyclize();
+           // Molecule cyc = MonteCarlo.cyclize(cat, cat.getTorsions(), cat.getAtomNumber(cat.getLeftConnect()), cat.getAtomNumber(cat.getRightConnect()));
+            MOL2InputFile m = new MOL2InputFile(cat);
             m.write("test_join.mol2");
         }
 }
