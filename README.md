@@ -1,4 +1,4 @@
-temporary
+macrocycle_draw
 =========
 
-A temporary repository for code.
+A simple utility for assembling macrocyclic catalysts, and performing conformational searches.
