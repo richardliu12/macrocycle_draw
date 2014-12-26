@@ -225,7 +225,22 @@ public class GJFfragment extends OutputFileFormat implements Immutable
         */
         public static void main(String[] args)
         {
-            GJFfragment temppyrrolidine = new GJFfragment("test.gjf");
-            Fragment pyrrolidine = Fragment.createFragment(temppyrrolidine);
+            GJFfragment g1 = new GJFfragment("test.gjf");
+            Fragment f1 = Fragment.createFragment(g1);
+            GJFfragment g2 = new GJFfragment("test2.gjf");
+            Fragment f2 = Fragment.createFragment(g2);
+            GJFfragment g3 = new GJFfragment("test3.gjf");
+            Fragment f3 = Fragment.createFragment(g3);
+
+            Catalyst cat = new Catalyst(f1);
+            cat = cat.addLeft(f2);
+            cat = cat.addRight(f3);
+            System.out.println(cat.getTorsions());
+            System.out.println(cat.getOPLSenergy());
+
+            Molecule cyc = MonteCarlo.cyclize(cat, cat.getTorsions(), cat.getAtomNumber(cat.getLeftConnect()), cat.getAtomNumber(cat.getRightConnect()));
+            MOL2InputFile m = new MOL2InputFile(cyc);
+            m.write("test_join.mol2");
+
         }
 }

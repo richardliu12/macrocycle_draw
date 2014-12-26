@@ -47,7 +47,64 @@ public class Catalyst extends Molecule implements Immutable, Serializable
         newFragmentList.add(fragment);
         this.fragmentList = ImmutableList.copyOf(newFragmentList);
     }
-    
+   
+    /**
+    * Returns the left connection point of the linear chain.
+    */
+    public Atom getLeftConnect()
+    {
+        return fragmentList.get(0).leftConnect;
+    }
+
+    public Atom getRightConnect()
+    {
+        return fragmentList.get(fragmentList.size() - 1).rightConnect;
+    }
+
+    /**
+     * Generates a list of IndexTorsions from the rotatable bonds.
+     * @return a list of IndexTorsions
+     */
+    public List<IndexTorsion> getTorsions()
+    {
+        List<IndexTorsion> returnTorsions = new ArrayList<>();
+
+        for ( Fragment f : fragmentList )
+        {
+            for ( DefaultWeightedEdge e : f.rotatableBonds.edgeSet() )
+                {
+                    Atom fromAtom = f.rotatableBonds.getEdgeSource(e);
+                    Atom toAtom = f.rotatableBonds.getEdgeTarget(e);
+
+                    List<Atom> fromAtomNeighbors = new ArrayList<Atom>(this.getAdjacentAtoms(fromAtom));
+                    List<Atom> toAtomNeighbors = new ArrayList<Atom>(this.getAdjacentAtoms(toAtom));
+
+                    fromAtomNeighbors.remove(toAtom);
+                    toAtomNeighbors.remove(fromAtom);
+
+                    if ( fromAtomNeighbors.size() == 0 || toAtomNeighbors.size() == 0 )
+                        continue;
+                    else
+                        returnTorsions.add(IndexTorsion.createIndexTorsion(getAtomNumber(fromAtomNeighbors.get(0)), getAtomNumber(fromAtom), getAtomNumber(toAtom), getAtomNumber(toAtomNeighbors.get(0)), this));
+                }
+            if ( fragmentList.indexOf(f) + 1 < fragmentList.size() )
+                {
+                    Atom fromAtom = f.rightConnect;
+                    Atom toAtom = fragmentList.get(fragmentList.indexOf(f) + 1).leftConnect;
+                    
+                    List<Atom> fromAtomNeighbors = new ArrayList<Atom>(this.getAdjacentAtoms(fromAtom));
+                    List<Atom> toAtomNeighbors = new ArrayList<Atom>(this.getAdjacentAtoms(toAtom));
+
+                    fromAtomNeighbors.remove(toAtom);
+                    toAtomNeighbors.remove(fromAtom);
+
+                    if ( fromAtomNeighbors.size() != 0 && toAtomNeighbors.size() != 0 )
+                        returnTorsions.add(IndexTorsion.createIndexTorsion(getAtomNumber(fromAtomNeighbors.get(0)), getAtomNumber(fromAtom), getAtomNumber(toAtom), getAtomNumber(toAtomNeighbors.get(0)), this));
+                }
+        }
+
+        return returnTorsions;
+    }
     /** 
      * Factory method that returns a copy of the Catalyst with fragment appended on left.
      * The catalyst left connection atom is connected to the fragment's right connection

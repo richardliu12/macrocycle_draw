@@ -100,17 +100,14 @@ public class Fragment extends Molecule implements Immutable, Serializable
         if ( atomMap.containsKey(this.ureaCarbon) )
                     newUreaCarbon = atomMap.get(this.ureaCarbon);
 
-        List<Atom> newChiralAtoms = Collections.<Atom>emptyList();
+        List<Atom> newChiralAtoms = new ArrayList<>();
         for ( Atom atom : chiralAtoms )
             {
                 if ( atomMap.containsKey(atom) )
-                    newChiralAtoms.add(atomMap.get(atom));
+                   newChiralAtoms.add(atomMap.get(atom));
             }
 
          SimpleWeightedGraph<Atom,DefaultWeightedEdge> newRotatableBonds = new SimpleWeightedGraph<Atom,DefaultWeightedEdge>(DefaultWeightedEdge.class);
-        for ( Atom atom : rotatableBonds.vertexSet() )
-            if ( atomMap.containsKey(atom) )
-                newRotatableBonds.addVertex(atomMap.get(atom));
 
         for ( DefaultWeightedEdge e : rotatableBonds.edgeSet() )
             {
@@ -122,6 +119,8 @@ public class Fragment extends Molecule implements Immutable, Serializable
                 if ( atomMap.containsKey(toAtom) )
                     toAtom = atomMap.get(toAtom);
 
+                newRotatableBonds.addVertex(fromAtom);
+                newRotatableBonds.addVertex(toAtom);
                 newRotatableBonds.addEdge(fromAtom,toAtom);
             }
         return new Fragment(newMolecule.name, newMolecule.contents, newMolecule.connectivity, newLeftConnect, newRightConnect, newUreaCarbon, this.fragmentType, newChiralAtoms, newRotatableBonds);
