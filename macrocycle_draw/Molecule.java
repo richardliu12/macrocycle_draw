@@ -347,14 +347,29 @@ public class Molecule implements Immutable, Serializable
         searchQueue.remove(excludeAtom);
         returnSet.remove(includeAtom);
         returnSet.remove(excludeAtom);
-
+        //System.out.println("******************");
+        //int i=0;
+        Atom lastNode = includeAtom;
         while (searchQueue.size() > 0)
             {
+                /*i++;
+                System.out.printf("Iteration %d\n", i);
+                System.out.println("search queue: ");
+                for (Atom a : searchQueue)
+                    System.out.print(getAtomString(a) + ", ");
+                System.out.println("return set: ");
+                for (Atom a : returnSet)
+                    System.out.print(getAtomString(a) + ", ");
+                System.out.printf("Current node is: %s\n", getAtomString(currentNode));
+                System.out.println("\n=========\n");
+                */
                 Atom currentNode = searchQueue.remove();
-                for (Atom a : getAdjacentAtoms(currentNode))
+                Set<Atom> adjacent = getAdjacentAtoms(currentNode);
+                adjacent.remove(lastNode);
+                for (Atom a : adjacent)
                     {   
                         // if the excluded atom is found, this is a ring!
-                        if ( a == excludeAtom )
+                        if ( a.equals(excludeAtom) )
                         {
                             GaussianInputFile gjf = new GaussianInputFile(this);
                             gjf.write("error.gjf");
