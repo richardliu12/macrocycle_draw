@@ -1,0 +1,20 @@
+%chk=C:\Users\richardliu\Documents\cat fragments\urea.chk
+# hf/3-21g geom=connectivity
+
+@left_connect@3
+@right_connect@1
+@urea_carbon@1
+@rotatable_bond@1@3@4
+@fragment_type@urea
+
+0 1
+ C                 -0.97249803    0.17351001    0.03593537
+ O                 -0.81681281    0.41298074   -1.18962019
+ N                 -1.88998807    1.00037481    0.83305935
+ H                 -1.89437946    0.67615484    1.77903087
+
+ 1 2 2.0 3 1.0
+ 2
+ 3 4 1.0
+ 4
+
