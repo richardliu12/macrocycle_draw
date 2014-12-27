@@ -93,7 +93,8 @@ public final class FragmentLibrary implements Singleton
     * This requires a template of how to construct the catalyst,
     * given as a List of FragmentTypes.  These will have been
     * cyclized, but not yet minimized.  This method constructs
-    * from LEFT TO RIGHT.
+    * from LEFT TO RIGHT.  WARNING: DO NOT PUT STEREOCENTERS AT 
+    * THE ENDS OF THE LINEAR MOLECULE WHEN DESIGNING TEMPLATE!!!
     * @param template
     * @param cyclize whether to cyclize or not
     * @return the list of Catalysts
@@ -155,18 +156,15 @@ public final class FragmentLibrary implements Singleton
          List<Catalyst> currentCatalysts = createCatalysts(template, false);
          // the elongated catalysts will be stored here:
          List<Catalyst> nextCatalysts = new ArrayList<>();
-        
+       
          for ( Catalyst c : currentCatalysts ) 
-            {   
-                Catalyst c1 = c;
-                MOL2InputFile m = new MOL2InputFile(c1);
-                m.write("error.mol2");
-                for ( Fragment f : c.fragmentList )
-                {
-                    f = f.shift(new Vector3D(1,1,1));
-                    c1 = c1.addRight(f);
+            {
+                Catalyst c1 = c.shift(new Vector3D(1,0,0));
+                for ( Fragment f : c1.fragmentList )
+                {   
+                    c = c.addRight(f);
                 }
-                nextCatalysts.add(c1);
+                nextCatalysts.add(c);
             }
         
         List<Catalyst> returnCatalysts = new ArrayList<>();

@@ -254,9 +254,9 @@ public class GJFfragment extends OutputFileFormat implements Immutable
             m.write("test_join.mol2");*/
             
             List<FragmentType> template = new ArrayList<>();
-            template.add(FragmentType.UREA);
             template.add(FragmentType.LINKER_1);
             template.add(FragmentType.LINKER_2);
+            template.add(FragmentType.UREA);
             /*template.add(FragmentType.UREA);
             template.add(FragmentType.LINKER_1);
             template.add(FragmentType.LINKER_2);*/

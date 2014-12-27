@@ -1,0 +1,20 @@
+%chk=C:\Users\richardliu\Documents\cat fragments\thiourea.chk
+# hf/3-21g geom=connectivity
+
+@left_connect@3
+@right_connect@1
+@urea_carbon@1
+@rotatable_bond@1@3@4
+@fragment_type@urea
+
+0 1
+ C                 -0.97249803    0.17351001    0.03593537
+ N                 -1.88998807    1.00037481    0.83305935
+ H                 -1.89437946    0.67615484    1.77903087
+ S                 -0.77870804    0.47159246   -1.48958135
+
+ 1 2 1.0 4 2.0
+ 2 3 1.0
+ 3
+ 4
+
