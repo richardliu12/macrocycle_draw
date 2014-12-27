@@ -412,13 +412,13 @@ public class Catalyst extends Molecule implements Immutable, Serializable
     {
         // note current bond length
         double currentLength = getDistance(atom1, atom2);
-        Map<Atom,Atom> newAtomMap = set_sp3_map(atom1, atom2);
-        Catalyst rotatedCatalyst = moveAtoms(newAtomMap);
-
         int atom1number = getAtomNumber(atom1);
         int atom2number = getAtomNumber(atom2);
 
-       	return rotatedCatalyst.setDistance(atom1number, atom2number, currentLength); 
+        Map<Atom,Atom> newAtomMap = set_sp3_map(atom1, atom2);
+        Catalyst rotatedCatalyst = moveAtoms(newAtomMap);
+
+      	return rotatedCatalyst.setDistance(atom1number, atom2number, currentLength); 
     }
 
     /**

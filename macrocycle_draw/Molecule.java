@@ -360,7 +360,6 @@ public class Molecule implements Immutable, Serializable
                             gjf.write("error.gjf");
                             throw new IllegalArgumentException("includeAtom " + getAtomString(includeAtom) +
                                                 " and excludeAtom " + getAtomString(excludeAtom) + " cannot form a ring!");
-
                         }
 
                         // if a isn't in returnSet, add it, and queue it for investigation
