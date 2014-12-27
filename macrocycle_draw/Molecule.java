@@ -343,13 +343,13 @@ public class Molecule implements Immutable, Serializable
                 searchQueue.add(a);
                 returnSet.add(a);
             }
-        searchQueue.remove(includeAtom);
         searchQueue.remove(excludeAtom);
         returnSet.remove(excludeAtom);
+        returnSet.add(includeAtom);
         searched.add(includeAtom);
         //System.out.println("******************");
         //int i=0;
-        //Atom lastNode = includeAtom;
+        Atom lastNode = includeAtom;
         while (searchQueue.size() > 0)
             {
                 /*i++;
@@ -365,7 +365,7 @@ public class Molecule implements Immutable, Serializable
                 
                 Atom currentNode = searchQueue.remove();
                 Set<Atom> adjacent = getAdjacentAtoms(currentNode);
-                //adjacent.remove(lastNode);
+                adjacent.remove(lastNode);
                 for (Atom a : adjacent)
                     {   
                         // if the excluded atom is found, this is a ring!
@@ -377,16 +377,24 @@ public class Molecule implements Immutable, Serializable
                                                 " and excludeAtom " + getAtomString(excludeAtom) + " cannot form a ring!");
                         }
 
-                        // if a isn't in returnSet, add it, and queue it for investigation
+                        // if this is an atom we haven't already searched, mark it
                         if ( ! searched.contains(a) )
                             {
-                                returnSet.add(a);
                                 searchQueue.add(a);
                                 searched.add(a);
+                                returnSet.add(a);
                             }
                     }
             }
-        returnSet.add(includeAtom);
+/*    System.out.println("includeAtom: " + getAtomString(includeAtom));
+    System.out.println("excludeAtom: " + getAtomString(excludeAtom));
+ System.out.println("return set: ");
+                for (Atom a : returnSet)
+                    System.out.print(getAtomString(a) + ", ");
+System.out.println();
+ GaussianInputFile gjf = new GaussianInputFile(this);
+                            gjf.write("error.gjf");
+*/
         return(returnSet);
     }
 

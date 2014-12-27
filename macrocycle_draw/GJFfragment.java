@@ -260,7 +260,7 @@ public class GJFfragment extends OutputFileFormat implements Immutable
             /*template.add(FragmentType.UREA);
             template.add(FragmentType.LINKER_1);
             template.add(FragmentType.LINKER_2);*/
-        
+            
             System.out.println(template);
             System.out.println(FragmentLibrary.getDatabase());
             for ( Catalyst c : FragmentLibrary.createC2Catalysts(template) )

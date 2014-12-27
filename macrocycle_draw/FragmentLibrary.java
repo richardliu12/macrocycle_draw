@@ -168,7 +168,7 @@ public final class FragmentLibrary implements Singleton
                 }
                 nextCatalysts.add(c1);
             }
-
+        
         List<Catalyst> returnCatalysts = new ArrayList<>();
         for ( Catalyst c : nextCatalysts )
             returnCatalysts.add(c.cyclize());
