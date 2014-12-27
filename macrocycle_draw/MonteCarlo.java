@@ -34,7 +34,7 @@ public final class MonteCarlo
     {  
         double temperature = KT;
 
-        System.out.println("Beginning Monte Carlo cyclization on " + m.name + ":\n:");
+        System.out.println("Beginning Monte Carlo cyclization on " + m.name + ":\n");
 
         for ( int i = 0 ; i < ITERATIONS ; i++ )
         {
@@ -47,8 +47,7 @@ public final class MonteCarlo
             if ( decider(newEnergy-oldEnergy, temperature) )
             {
                 m = testMolecule;
-                System.out.println("(" + i + ")Old Energy: " + oldEnergy + "\nNew Energy: " + newEnergy + "\n");
-                System.out.println("{Accepted!}\n");
+                System.out.println("(" + m.name + ",\t iteration " + i + ")\tOld Energy: " + oldEnergy + "\tNew Energy: " + newEnergy);
             }
            
             temperature = temperature - KT/ITERATIONS;
@@ -61,6 +60,7 @@ public final class MonteCarlo
                 }*/
         }
         
+        System.out.println("DONE! \n\n");
         return m;
     }
 

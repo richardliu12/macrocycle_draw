@@ -9,6 +9,7 @@ cat ./mae/$1.mae
 inputName=$1".mae"
 outputName=$1".maegz"
 sed 1s/.*/"$inputName"/ minimize.com | sed 2s/.*/"$outputName"/ > ./mae/$1.com
+mv $1.mol2 ./mae/$1-start.mol2
 cd mae
 /n/sw/schrodinger/macromodel -LOCAL -WAIT $1.com
 mv $1.maegz $1.gz
