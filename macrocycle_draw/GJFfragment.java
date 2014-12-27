@@ -42,6 +42,7 @@ public class GJFfragment extends OutputFileFormat implements Immutable
 	
         // read geometry
 	    String name = filename.split("\\.")[0];
+        name = name.split("/")[name.split("/").length-1];
         List<Atom> contents = new ArrayList<>();
 	    SimpleWeightedGraph<Atom,DefaultWeightedEdge> connectivity = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
         int blanks = 0;
@@ -225,7 +226,7 @@ public class GJFfragment extends OutputFileFormat implements Immutable
         */
         public static void main(String[] args)
         {
-            GJFfragment g1 = new GJFfragment("urea.gjf");
+           /* GJFfragment g1 = new GJFfragment("urea.gjf");
             Fragment f1 = Fragment.createFragment(g1);
             GJFfragment g2 = new GJFfragment("aryl.gjf");
             Fragment f2 = Fragment.createFragment(g2);
@@ -250,6 +251,22 @@ public class GJFfragment extends OutputFileFormat implements Immutable
             cat = cat.cyclize();
            // Molecule cyc = MonteCarlo.cyclize(cat, cat.getTorsions(), cat.getAtomNumber(cat.getLeftConnect()), cat.getAtomNumber(cat.getRightConnect()));
             MOL2InputFile m = new MOL2InputFile(cat);
-            m.write("test_join.mol2");
+            m.write("test_join.mol2");*/
+            
+            List<FragmentType> template = new ArrayList<>();
+            template.add(FragmentType.UREA);
+            template.add(FragmentType.LINKER_1);
+            template.add(FragmentType.LINKER_2);
+            template.add(FragmentType.UREA);
+            template.add(FragmentType.LINKER_1);
+            template.add(FragmentType.LINKER_2);
+        
+            System.out.println(template);
+            System.out.println(FragmentLibrary.getDatabase());
+            for ( Catalyst c : FragmentLibrary.createCatalysts(template) )
+            {
+                MOL2InputFile m = new MOL2InputFile(c);
+                m.write(c.name + ".mol2");
+            }
         }
 }

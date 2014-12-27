@@ -13,10 +13,10 @@ public final class MonteCarlo
     public static final double BOND_LENGTH = 1.35;
 
     /** Number of iterations; we always use this many. */
-    public static final int ITERATIONS = 1000;
+    public static final int ITERATIONS = 200;
 
     /** Initial temperature.  Final temp is zero. */
-    public static final double KT = 0.5;
+    public static final double KT = 2.0;
 
     /** Do not instantiate. */
     private MonteCarlo(){throw new IllegalArgumentException("Do not create instance of Monte Carlo!");}
@@ -34,6 +34,8 @@ public final class MonteCarlo
     {  
         double temperature = KT;
 
+        System.out.println("Beginning Monte Carlo cyclization on " + m.name + ":\n:");
+
         for ( int i = 0 ; i < ITERATIONS ; i++ )
         {
             // this energy function includes the opls energy of the
@@ -45,19 +47,18 @@ public final class MonteCarlo
             if ( decider(newEnergy-oldEnergy, temperature) )
             {
                 m = testMolecule;
-                System.out.println("{Accepted!}\n\n\n");
+                System.out.println("(" + i + ")Old Energy: " + oldEnergy + "\nNew Energy: " + newEnergy + "\n");
+                System.out.println("{Accepted!}\n");
             }
-
-            System.out.println("Old Energy: " + oldEnergy + "\nNew Energy: " + newEnergy + "\n\n\n");
-            
+           
             temperature = temperature - KT/ITERATIONS;
             
-            // for testing
+            /* for testing
             if ( i%100 == 0 )
                 {
                     MOL2InputFile mol = new MOL2InputFile(m);
                     mol.write("opt_"+i/100+".mol2");
-                }
+                }*/
         }
         
         return m;

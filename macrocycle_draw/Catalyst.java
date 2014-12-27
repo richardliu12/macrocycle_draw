@@ -138,7 +138,7 @@ public class Catalyst extends Molecule implements Immutable, Serializable
         }
         else
         {
-            String newName = fragment.name + "/" + name;
+            String newName = fragment.name + "_" + name;
 
             List<Atom> newContents = new ArrayList<Atom>(fragment.contents);
             newContents.addAll(contents);
@@ -174,7 +174,7 @@ public class Catalyst extends Molecule implements Immutable, Serializable
         }
         else
         {
-            String newName = name + "/" + fragment.name;
+            String newName = name + "_" + fragment.name;
 
             List<Atom> newContents = new ArrayList<Atom>(contents);
             newContents.addAll(fragment.contents);

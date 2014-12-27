@@ -64,6 +64,74 @@ public final class FragmentLibrary implements Singleton
 
         DATABASE = ImmutableMap.copyOf(tempMap);
     }
+
+    /** 
+     * Should be used to list items in the DATABASE.  Using DATABASE.toString
+     * generates an excessively verbose output.
+     */
+     public static String getDatabase()
+     {
+         FragmentType[] types = {FragmentType.UREA, FragmentType.THIOUREA,
+                                FragmentType.LINKER_1, FragmentType.LINKER_2,
+                                FragmentType.LINKER_3, FragmentType.LINKER_4};
+         String returnString = "";
+         for ( FragmentType t : types )
+            {
+                returnString += "\n\n" + t + ": \n";
+                for ( Fragment f : DATABASE.get(t))
+                {
+                    returnString += f.name + "\n";
+                }
+            }
+
+         return returnString;
+     }
+
+    /**
+    * Returns a List of cyclized Catalysts from the DATABASE. 
+    * This requires a template of how to construct the catalyst,
+    * given as a List of FragmentTypes.  These will have been
+    * cyclized, but not yet minimized.  This method constructs
+    * from LEFT TO RIGHT.
+    * @param template
+    * @return the list of Catalysts
+    */
+    public static List<Catalyst> createCatalysts(List<FragmentType> template)
+    {
+        // This will work by going through the template file,
+        // and adding the appropriate fragments at each stage.
+        // For each iteration, we populate the List nextCatalysts
+        // based on currentCatalysts, and then move the newly
+        // generated catalysts to currentCatalysts. 
+        List<Catalyst> currentCatalysts = new ArrayList<>();
+        List<Catalyst> nextCatalysts = new ArrayList<>();
+          
+        // Add the first fragment separately
+        if ( template.size() == 0 )
+            throw new IllegalArgumentException("Empty template!");
+        else
+            for ( Fragment f : DATABASE.get(template.get(0)) )
+                currentCatalysts.add(new Catalyst(f));
+
+        // Check that the catalyst list is not empty!
+        if ( currentCatalysts.size() == 0 )
+            throw new IllegalArgumentException("DATABASE contains no " + template.get(0));
+
+        for ( int i = 1 ; i < template.size(); i++ )
+            {
+                for ( Catalyst c : currentCatalysts )
+                    for ( Fragment f : DATABASE.get(template.get(i)) )
+                        nextCatalysts.add(c.addRight(f));
+                currentCatalysts = nextCatalysts;
+                nextCatalysts = new ArrayList<>();
+            }      
+
+        // Cyclize the catalysts!
+        for ( Catalyst c : currentCatalysts )
+            nextCatalysts.add(c.cyclize());
+
+        return nextCatalysts;
+    }
 }
 
 
