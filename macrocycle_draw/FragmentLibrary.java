@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.*;
 import com.google.common.collect.*;
+import org.apache.commons.math3.geometry.euclidean.threed.*;
 
 /**
 * Holds and organizes all fragments.  All the pieces in a Catalyst are
@@ -77,7 +78,7 @@ public final class FragmentLibrary implements Singleton
          String returnString = "";
          for ( FragmentType t : types )
             {
-                returnString += "\n\n" + t + ": \n";
+                returnString += "\n" + t + ": \n";
                 for ( Fragment f : DATABASE.get(t))
                 {
                     returnString += f.name + "\n";
@@ -94,9 +95,10 @@ public final class FragmentLibrary implements Singleton
     * cyclized, but not yet minimized.  This method constructs
     * from LEFT TO RIGHT.
     * @param template
+    * @param cyclize whether to cyclize or not
     * @return the list of Catalysts
     */
-    public static List<Catalyst> createCatalysts(List<FragmentType> template)
+    public static List<Catalyst> createCatalysts(List<FragmentType> template, boolean cyclize)
     {
         // This will work by going through the template file,
         // and adding the appropriate fragments at each stage.
@@ -127,11 +129,51 @@ public final class FragmentLibrary implements Singleton
             }      
 
         // Cyclize the catalysts!
-        for ( Catalyst c : currentCatalysts )
-            nextCatalysts.add(c.cyclize());
-
+        if ( cyclize )
+            for ( Catalyst c : currentCatalysts )
+                nextCatalysts.add(c.cyclize());
+        else
+            nextCatalysts = currentCatalysts;
         return nextCatalysts;
     }
+
+    /**
+     * Alias method.
+     */
+    public static List<Catalyst> createCatalysts(List<FragmentType> template)
+    {
+        return createCatalysts(template, true);
+    }
+
+    /**
+     * Makes a C2-symmetric catalyst given a template for half the catalyst.
+     * Of course, the conformations may not be C2-symmetric, but this method
+     * guarantees that the catalyst will have two identical halves.
+     */
+     public static List<Catalyst> createC2Catalysts(List<FragmentType> template)
+     {
+         List<Catalyst> currentCatalysts = createCatalysts(template, false);
+         // the elongated catalysts will be stored here:
+         List<Catalyst> nextCatalysts = new ArrayList<>();
+        
+         for ( Catalyst c : currentCatalysts ) 
+            {   
+                Catalyst c1 = c;
+                MOL2InputFile m = new MOL2InputFile(c1);
+                m.write("error.mol2");
+                for ( Fragment f : c.fragmentList )
+                {
+                    f = f.shift(new Vector3D(1,1,1));
+                    c1 = c1.addRight(f);
+                }
+                nextCatalysts.add(c1);
+            }
+
+        List<Catalyst> returnCatalysts = new ArrayList<>();
+        for ( Catalyst c : nextCatalysts )
+            returnCatalysts.add(c.cyclize());
+        return returnCatalysts;
+     }
 }
 
 

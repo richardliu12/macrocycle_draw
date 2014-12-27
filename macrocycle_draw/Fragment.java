@@ -342,6 +342,17 @@ public class Fragment extends Molecule implements Immutable, Serializable
     }
 
     /**
+     * Returns a deep copy of this Fragment with a new name.
+     * @param name the new name
+     * @return new Fragment
+     */
+    public Fragment setName(String name)
+    {
+        Fragment copiedFragment = moveAtoms(new HashMap<Atom,Atom>());
+        return new Fragment(name, copiedFragment.contents, copiedFragment.connectivity, copiedFragment.leftConnect, copiedFragment.rightConnect, copiedFragment.ureaCarbon, copiedFragment.fragmentType, copiedFragment.chiralAtoms, copiedFragment.rotatableBonds);
+    }
+
+    /**
     * Returns a String representation of the Fragment.
     * @return a String
     */

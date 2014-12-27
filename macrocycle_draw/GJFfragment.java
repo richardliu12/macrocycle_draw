@@ -257,13 +257,13 @@ public class GJFfragment extends OutputFileFormat implements Immutable
             template.add(FragmentType.UREA);
             template.add(FragmentType.LINKER_1);
             template.add(FragmentType.LINKER_2);
-            template.add(FragmentType.UREA);
+            /*template.add(FragmentType.UREA);
             template.add(FragmentType.LINKER_1);
-            template.add(FragmentType.LINKER_2);
+            template.add(FragmentType.LINKER_2);*/
         
             System.out.println(template);
             System.out.println(FragmentLibrary.getDatabase());
-            for ( Catalyst c : FragmentLibrary.createCatalysts(template) )
+            for ( Catalyst c : FragmentLibrary.createC2Catalysts(template) )
             {
                 MOL2InputFile m = new MOL2InputFile(c);
                 m.write(c.name + ".mol2");

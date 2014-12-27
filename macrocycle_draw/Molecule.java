@@ -351,15 +351,13 @@ public class Molecule implements Immutable, Serializable
         while (searchQueue.size() > 0)
             {
                 Atom currentNode = searchQueue.remove();
-                
                 for (Atom a : getAdjacentAtoms(currentNode))
-                    {
+                    {   
                         // if the excluded atom is found, this is a ring!
                         if ( a == excludeAtom )
                         {
                             GaussianInputFile gjf = new GaussianInputFile(this);
                             gjf.write("error.gjf");
-
                             throw new IllegalArgumentException("includeAtom " + getAtomString(includeAtom) +
                                                 " and excludeAtom " + getAtomString(excludeAtom) + " cannot form a ring!");
 
