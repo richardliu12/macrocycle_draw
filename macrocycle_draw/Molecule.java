@@ -369,7 +369,7 @@ public class Molecule implements Immutable, Serializable
                 for (Atom a : adjacent)
                     {   
                         // if the excluded atom is found, this is a ring!
-                        if ( a.equals(excludeAtom) )
+                        if ( a==excludeAtom )
                         {
                             GaussianInputFile gjf = new GaussianInputFile(this);
                             gjf.write("error.gjf");

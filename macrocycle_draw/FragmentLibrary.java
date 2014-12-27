@@ -93,7 +93,8 @@ public final class FragmentLibrary implements Singleton
     * This requires a template of how to construct the catalyst,
     * given as a List of FragmentTypes.  These will have been
     * cyclized, but not yet minimized.  This method constructs
-    * from LEFT TO RIGHT.
+    * from LEFT TO RIGHT.  WARNING: DO NOT PUT STEREOCENTERS AT 
+    * THE ENDS OF THE LINEAR MOLECULE WHEN DESIGNING TEMPLATE!!!
     * @param template
     * @param cyclize whether to cyclize or not
     * @return the list of Catalysts

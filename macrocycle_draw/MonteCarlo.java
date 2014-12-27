@@ -13,7 +13,7 @@ public final class MonteCarlo
     public static final double BOND_LENGTH = 1.35;
 
     /** Number of iterations; we always use this many. */
-    public static final int ITERATIONS = 200;
+    public static final int ITERATIONS = 400;
 
     /** Initial temperature.  Final temp is zero. */
     public static final double KT = 2.0;
