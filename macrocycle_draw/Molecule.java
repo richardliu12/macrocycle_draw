@@ -337,7 +337,7 @@ public class Molecule implements Immutable, Serializable
 
         // preform a breadth-first search of one branch of the graph only
         LinkedList<Atom> searchQueue = new LinkedList<Atom>();
-
+        Set<Atom> searched = new HashSet<>();
         for (Atom a : getAdjacentAtoms(includeAtom))
             {
                 searchQueue.add(a);
@@ -345,11 +345,11 @@ public class Molecule implements Immutable, Serializable
             }
         searchQueue.remove(includeAtom);
         searchQueue.remove(excludeAtom);
-        returnSet.remove(includeAtom);
         returnSet.remove(excludeAtom);
+        searched.add(includeAtom);
         //System.out.println("******************");
         //int i=0;
-        Atom lastNode = includeAtom;
+        //Atom lastNode = includeAtom;
         while (searchQueue.size() > 0)
             {
                 /*i++;
@@ -361,15 +361,15 @@ public class Molecule implements Immutable, Serializable
                 for (Atom a : returnSet)
                     System.out.print(getAtomString(a) + ", ");
                 System.out.printf("Current node is: %s\n", getAtomString(currentNode));
-                System.out.println("\n=========\n");
-                */
+                System.out.println("\n=========\n");*/
+                
                 Atom currentNode = searchQueue.remove();
                 Set<Atom> adjacent = getAdjacentAtoms(currentNode);
-                adjacent.remove(lastNode);
+                //adjacent.remove(lastNode);
                 for (Atom a : adjacent)
                     {   
                         // if the excluded atom is found, this is a ring!
-                        if ( a==excludeAtom )
+                        if ( a == excludeAtom)
                         {
                             GaussianInputFile gjf = new GaussianInputFile(this);
                             gjf.write("error.gjf");
@@ -378,10 +378,11 @@ public class Molecule implements Immutable, Serializable
                         }
 
                         // if a isn't in returnSet, add it, and queue it for investigation
-                        if ( ! returnSet.contains(a) && a != includeAtom )
+                        if ( ! searched.contains(a) )
                             {
                                 returnSet.add(a);
                                 searchQueue.add(a);
+                                searched.add(a);
                             }
                     }
             }
