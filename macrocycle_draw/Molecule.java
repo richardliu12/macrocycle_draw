@@ -1718,5 +1718,18 @@ System.out.println();
         System.out.println(calculateRMSD(m1,m1,atomNumbers));
         System.out.println(calculateRMSD(m1,m2,atomNumbers));
         */
+        GJFfile file = new GJFfile("input/alkane.gjf");
+        Molecule molecule = file.molecule;
+        System.out.println(molecule);
+        Set<Atom> atoms = molecule.getHalfGraph(7,5);
+        Set<Integer> numbers = new TreeSet<>();
+        for (Atom a : atoms)
+            {
+                int number = molecule.contents.indexOf(a) +1;
+                numbers.add(number);
+            }
+        for (Integer number : numbers)
+            System.out.printf("%d, ", number);
+        System.out.println();
     }
 }
