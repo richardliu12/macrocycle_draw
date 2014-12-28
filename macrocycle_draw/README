@@ -1,0 +1,178 @@
+Macrocycle_Draw 1.0 
+December 31, 2014
+
+Richard Liu
+richardliu@college.harvard.edu
+richardyliu93@gmail.com
+
+============================================
+GENERAL INSTRUCTIONS
+This is a program for automatically drawing
+macrocyclic oligo(thio)urea catalysts and
+analyzing their conformations.  The program
+is designed to run on the Harvard Odyssey
+Cluster and requires access to MacroModel.
+============================================
+
+TABLE OF CONTENTS
+    1. Program Overview
+    2. Job SETUP
+    3. Conformational SEARCH
+    4. Output ANALYSIS
+    5. Frequently Asked Questions
+
+============================================
+
+1. Program Overview
+
+    The program files include many .java classes
+    and several .sh scripts, as well as 
+    auxiliary files.  In addition, there are
+    several folders which will be useful.
+
+    The "input" folder: you will place your
+    catalyst fragments in here, along with a
+    template for how the program should
+    construct catalysts from them (see 2.)
+
+    The "mae" folder: the program will assemble
+    macrocycles from your fragments and place
+    them in here after rough minimization. 
+    This folder has tools for you to run the 
+    conformational search part either on one
+    catalyst at a time, or on all (see 3.)
+
+    The "output" folder: once the conformational
+    search is done, the results go in their own
+    folder in here -- one per catalyst.  Here
+    you can run analysis to find out more about
+    the results, as well as view the resulting
+    conformations or further minimize with DFT.
+    (see 4.)
+
+    Let's get started!
+
+2. Job SETUP (the input folder)
+
+    a. template
+        The most important file is the template. 
+        Use it to construct a linear pattern for 
+        the catalysts you want to generate.  You 
+        do this by specifying fragment TYPES, 
+        separated by @, on the first line:
+
+        e.g. linker_1@linker_2@urea@linker_1@urea
+
+        This means: pick one fragment of type
+        linker_1, connect it to one of type
+        linker_2, etc., then cyclize.  There is
+        also a special command called C2, which
+        is used to construct a symmetric macrocycle.
+        In this case, only specify half the template
+        since the other half will be an exact repeat.
+    
+    b. fragments
+        The fragment files are gjf files.  In the
+        place where the name of the Gaussian job 
+        usually goes, you need to specify some
+        metadata.
+
+      * @fragment_type@FRAGMENTTYPE
+
+        These fragment types correspond to those
+        used by the template.  Your options are:
+            -UREA           -LINKER_2
+            -THIOUREA       -LINKER_3
+            -LINKER_1       -LINKER_4
+        
+      * @left_connect@ATOMNUMBER
+        @right_connect@ATOMNUMBER
+        
+        These are the connection points for the
+        fragment.  It is acceptable to use chiral
+        connecting atoms -- simply make sure that
+        the atom, including the "missing" bond, 
+        is the correct chirality.  However,
+        AVOID PLACING CHIRAL ATOMS AT THE ENDS
+        OF THE LINEAR CATALYST, as defined by 
+        template.
+
+      * @chiral_atom@ATOMNUMBER1@ATOMNUMBER2...
+        
+        Specify any chiral atoms all on one line.
+
+      * @rotatable_bond@ATOMNUMBER1@...
+
+        Rotatable bonds, especially those INSIDE
+        the macrocycle, must be specified.
+        Many of these can be specified on one
+        line: for instance, @1@2@3@4 includes
+        the 1-2, 2-3 and 3-4 bonds.  Use
+        several @rotatable_bond lines if
+        necessary.
+
+      * @urea_carbon
+
+        Specify which atom is the (thio)urea
+        carbon.  This is useful for analysis
+        later. 
+
+        For more examples, please see the
+        sample .gjf files provided.  Only place
+        fragment files in the input folder if 
+        you want them to be used!
+    
+    c. running the SETUP
+        In the main working directory (the one
+        that contains input), run the file
+        SETUP.sh.  Make sure you are logged onto a
+        computer like enj01, and not the login
+        node.  Once finished, check the mae 
+        folder.  You can examine the -min.mol2
+        files to ensure that your catalysts are
+        properly formed.  If so, proceed.
+
+3. Conformational SEARCH
+    
+    a. submit one job
+        You may want to submit your jobs one
+        at a time if you have a large number
+        in the mae folder.  Use the script
+        RUN_ONE.sh #NAME#.  Replace #NAME# with
+        the full name of the desired catalyst,
+        without any extension.
+    
+    b. submit all jobs in folder
+        Use the script RUN_ALL.sh.
+
+4. Output ANALYSIS
+    
+    Once your conformational search runs, your 
+    files should have been moved from the mae 
+    folder to /output/#NAME#.  There will also 
+    be some new files, including a log file, the 
+    resultant structures, and a serialized 
+    version of some metadata from back in step 2.  
+    In the output folder, run ANALYZE.sh $NAME$ 
+    to perform analysis on a folder.  
+    This will do a few things:
+
+    1) It will extract structures and prepare a 
+    .gjf for each conformation found, labeled by
+    number (lower number = lower energy). These
+    can be submitted directly to Gaussian for 
+    M06-2X/6-31G(d)(benzene) energies.
+
+    It will also provide:
+    2) A file called "energy", which will list
+    the molecular mechanics energies.
+
+    3) A file called "analysis", which will list
+    the conformations by inter-urea-carbon
+    distance(s), assuming there exists at least
+    two indicated urea carbon(s).  
+
+5. Frequently Asked Questions
+
+    There are none.
+
