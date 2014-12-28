@@ -2,6 +2,9 @@
 
 # converts mol2 file $1
 # $1 should not have a file extension
+# minimizes $1
+# saves in ./mae
+# also generates a .mol2 snapshot
 
 date
 /n/sw/schrodinger/utilities/structconvert -imol2 ./$1.mol2 -omae ./mae/$1.mae

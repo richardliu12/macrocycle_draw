@@ -122,9 +122,9 @@ public class GJFfragment extends OutputFileFormat implements Immutable
                             {
                                if ( s.split("@").length < 3 ) 
                                    throw new IllegalArgumentException("improper chiral_atom specification in " + filename + ":\n" + line.toString());
-                                else
-                                    for ( int i = 2; i < s.split("@").length; i++)
-                                        chiralAtomNumbers.add(Integer.parseInt(s.split("@")[i]));
+                               else
+                                   for ( int i = 2; i < s.split("@").length; i++)
+                                       chiralAtomNumbers.add(Integer.parseInt(s.split("@")[i]));
                             }
                             else if ( s.split("@")[1].toLowerCase().equals("rotatable_bond") )
                             {
@@ -210,7 +210,7 @@ public class GJFfragment extends OutputFileFormat implements Immutable
         for ( int i : chiralAtomNumbers )
             tempChiralAtoms.add(molecule.getAtom(i));
         chiralAtoms = ImmutableList.copyOf(tempChiralAtoms);
-        
+
         rotatableBonds = new SimpleWeightedGraph<Atom,DefaultWeightedEdge>(DefaultWeightedEdge.class);
         for ( int atomNumber : rotatableBondIndices.vertexSet() )
             rotatableBonds.addVertex(contents.get(atomNumber));
@@ -252,7 +252,6 @@ public class GJFfragment extends OutputFileFormat implements Immutable
            // Molecule cyc = MonteCarlo.cyclize(cat, cat.getTorsions(), cat.getAtomNumber(cat.getLeftConnect()), cat.getAtomNumber(cat.getRightConnect()));
             MOL2InputFile m = new MOL2InputFile(cat);
             m.write("test_join.mol2");*/
-            
             List<FragmentType> template = new ArrayList<>();
             template.add(FragmentType.LINKER_1);
             template.add(FragmentType.LINKER_2);
@@ -260,13 +259,9 @@ public class GJFfragment extends OutputFileFormat implements Immutable
             /*template.add(FragmentType.UREA);
             template.add(FragmentType.LINKER_1);
             template.add(FragmentType.LINKER_2);*/
-            
+            /*
             System.out.println(template);
-            System.out.println(FragmentLibrary.getDatabase());
-            for ( Catalyst c : FragmentLibrary.createC2Catalysts(template) )
-            {
-                MOL2InputFile m = new MOL2InputFile(c);
-                m.write(c.name + ".mol2");
-            }
+            */
+            System.out.println(FragmentLibrary.createC2Catalysts(template).get(0).fragmentList);
         }
 }

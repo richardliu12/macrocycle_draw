@@ -104,7 +104,19 @@ public class Catalyst extends Molecule implements Immutable, Serializable
         }
         return returnTorsions;
     }
-   
+    
+    /**
+     * Gets torsions from a cyclic catalyst.  Cuts the connection bond and returns the
+     * remaining torsions.
+     */
+     public List<IndexTorsion> getLinearTorsions()
+     {
+         this.connectivity.removeEdge(fragmentList.get(0).leftConnect, fragmentList.get(fragmentList.size()-1).rightConnect);
+         List<IndexTorsion> returnTorsions = getTorsions();
+         this.connectivity.addEdge(fragmentList.get(0).leftConnect, fragmentList.get(fragmentList.size()-1).rightConnect);
+         return returnTorsions;
+     }
+
     /**
      * Cyclization method.  Returns a cyclized version of this catalyst.
      */
@@ -112,7 +124,6 @@ public class Catalyst extends Molecule implements Immutable, Serializable
      {
          Molecule m = MonteCarlo.cyclize(this, this.getTorsions(), getAtomNumber(this.getLeftConnect()), getAtomNumber(this.getRightConnect()));
          Map<Atom,Atom> atomMap = this.matchMap(m);
-         
          // create the new bond
          DefaultWeightedEdge e = connectivity.addEdge(this.getLeftConnect(), this.getRightConnect());
          connectivity.setEdgeWeight(e, 1);
@@ -129,7 +140,7 @@ public class Catalyst extends Molecule implements Immutable, Serializable
      */
     @SuppressWarnings("unchecked")
     public Catalyst addLeft(Fragment fragment)
-    {
+    {   
         if ( fragmentList.size() == 0 )
         {
             List<Fragment> newFragmentList = new ArrayList<Fragment>();

@@ -90,5 +90,15 @@ public class Macrocycle_Draw
                     }
                 System.out.println("DONE!");
             }
+    
+        // Writes a .com file for a catalyst
+        for ( Catalyst c : catalysts )
+            {   
+                System.out.println("Writing conformational search file for " +
+                    c.name + "...");
+                COMInputFile cfile = new COMInputFile(c);
+                cfile.write(Settings.WORKING_DIRECTORY + c.name + ".com");
+                System.out.println("DONE!\n");
+            }
     }
 }

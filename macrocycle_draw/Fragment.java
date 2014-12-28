@@ -67,7 +67,6 @@ public class Fragment extends Molecule implements Immutable, Serializable
     * @param rotatableBonds
     * @return a Fragment
     */
-
     private Fragment(String name, List<Atom> contents, SimpleWeightedGraph<Atom,DefaultWeightedEdge> connectivity, Atom leftConnect, Atom rightConnect, Atom ureaCarbon, FragmentType fragmentType, List<Atom> chiralAtoms, SimpleWeightedGraph<Atom,DefaultWeightedEdge> rotatableBonds)
     {
         super(name, contents, connectivity);
@@ -105,6 +104,8 @@ public class Fragment extends Molecule implements Immutable, Serializable
             {
                 if ( atomMap.containsKey(atom) )
                    newChiralAtoms.add(atomMap.get(atom));
+                else
+                   newChiralAtoms.add(atom);
             }
 
          SimpleWeightedGraph<Atom,DefaultWeightedEdge> newRotatableBonds = new SimpleWeightedGraph<Atom,DefaultWeightedEdge>(DefaultWeightedEdge.class);
@@ -141,7 +142,7 @@ public class Fragment extends Molecule implements Immutable, Serializable
         Atom newRightConnect = this.rightConnect.transform(rot,shift);
         Atom newUreaCarbon = this.ureaCarbon.transform(rot,shift);
         
-        List<Atom> newChiralAtoms = Collections.<Atom>emptyList();
+        List<Atom> newChiralAtoms = new ArrayList<>();
         for ( Atom atom : chiralAtoms ) 
             newChiralAtoms.add(atom.transform(rot,shift));
 
@@ -361,7 +362,7 @@ public class Fragment extends Molecule implements Immutable, Serializable
     {
         String superToString = super.toString();
         superToString += "\nLeft: " + leftConnect + "\nRight " + rightConnect;
-        superToString += "\nUrea Carbon: " + ureaCarbon + "\nfragmentType: " + fragmentType;
+        superToString += "\nUrea Carbon: " + ureaCarbon + "\nfragmentType: " + fragmentType + "\nChiral Atoms:" + chiralAtoms;
         return superToString;
     }
 
