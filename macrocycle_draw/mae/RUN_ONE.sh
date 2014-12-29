@@ -3,7 +3,6 @@
 # $1 should not have a file extension
 # submits conf. search $1.com
 # saves in ./output/$1/
-# also moves associated files
 
 # run csearch
 date
