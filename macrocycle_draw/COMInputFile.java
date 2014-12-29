@@ -124,6 +124,24 @@ public class COMInputFile // does not extend InputFileFormat
             + ".com");
         InputFileFormat.appendStringToDisk("\n" + toCOMLine("MINI", 1, 0, 1000, 0,
             0, 0, 0, 0), Settings.WORKING_DIRECTORY + "/mae/" + catalyst.name + ".com");
+    
+        //
+        // Serialize the Catalyst file
+        //
+        try
+        {
+            new File(Settings.WORKING_DIRECTORY + "/output/" + catalyst.name).mkdir();
+            FileOutputStream fileOut = new FileOutputStream(Settings.WORKING_DIRECTORY + 
+                "/output/" + catalyst.name + "/catalyst.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this.catalyst);
+            out.close();
+            fileOut.close();
+        }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+        }
     }
 
     /** Formats a line for .com file.
