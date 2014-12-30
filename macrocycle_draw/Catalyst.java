@@ -149,7 +149,8 @@ public class Catalyst extends Molecule implements Immutable, Serializable
      */
     @SuppressWarnings("unchecked")
     public Catalyst addLeft(Fragment fragment)
-    {   
+    {  
+        fragment = fragment.shift(new Vector3D(1,0,0));
         if ( fragmentList.size() == 0 )
         {
             List<Fragment> newFragmentList = new ArrayList<Fragment>();
@@ -186,6 +187,7 @@ public class Catalyst extends Molecule implements Immutable, Serializable
     @SuppressWarnings("unchecked") 
     public Catalyst addRight(Fragment fragment)
     {
+        fragment = fragment.shift(new Vector3D(1,0,0));
         if ( fragmentList.size() == 0 )
         {
             List<Fragment> newFragmentList = new ArrayList<Fragment>();

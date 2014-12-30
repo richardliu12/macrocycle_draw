@@ -71,9 +71,9 @@ public abstract class Analysis
         // and all the distances are added to the list
         List<Fragment> fragments = c.fragmentList;
         for ( int i = 0; i < fragments.size(); i++)
-            for ( int j = 0; j < i; j++)
+            for ( int j = i; j < fragments.size(); j++)
                 if ( !( fragments.get(i).ureaCarbon.element.equals(Element.DUMMY)
-                        || fragments.get(j).ureaCarbon.element.equals(Element.DUMMY)) )
+                        || fragments.get(j).ureaCarbon.element.equals(Element.DUMMY)) && (i!=j) )
                     {
                         distanceIdentifiers.add("C"+ c.getAtomNumber(fragments.get(i).ureaCarbon) + "-C" 
                                             + c.getAtomNumber(fragments.get(j).ureaCarbon) + " distance");
@@ -137,6 +137,63 @@ public abstract class Analysis
         catch(IOException e)
         {
             e.printStackTrace();
+        }
+
+        // sort by distances
+        for ( int n = 0; n < distances.size(); n++)
+        {
+            final int n2 = n; // somewhat suspicious, but please ignore
+            Collections.sort(conformations,
+                new Comparator<Catalyst>(){
+                    public int compare(Catalyst c1, Catalyst c2){
+                        return Double.compare(distances2.get(n2).get(conformations2.indexOf(c1)),
+                                              distances2.get(n2).get(conformations2.indexOf(c2)));
+                    }
+                });
+    
+            Collections.sort(energies, 
+                new Comparator<Double>(){
+                    public int compare(Double d1, Double d2){
+                        return Double.compare(distances2.get(n2).get(energies2.indexOf(d1)),
+                                                    distances2.get(n2).get(energies2.indexOf(d2)));
+                    }
+                });
+
+            for ( int m1 = 0; m1 < distances.size(); m1++)
+            {
+                final int m2 = m1;
+                Collections.sort(distances.get(m1),
+                    new Comparator<Double>(){
+                        public int compare(Double d1, Double d2){
+                            return Double.compare(distances2.get(n2).get(distances2.get(m2).indexOf(d1)),
+                                                    distances2.get(n2).get(distances2.get(m2).indexOf(d2)));
+                        }
+                    });
+            }
+
+            // write to file
+            fileString = "Conformation Number\tEnergy\t";
+            for ( String s : distanceIdentifiers)
+                fileString = fileString + "\t" + s;
+
+            for ( int i = 0; i < energies.size(); i++ )
+            {
+                fileString = fileString + "\n";
+                fileString = fileString + conformations.get(i).name + "\t\t\t\t";
+                fileString = fileString + String.format("%10.6f", energies.get(i)) + "\t";
+                for ( int j = 0; j < distances.size(); j++ )
+                fileString = fileString + String.format("%-10.6f", distances.get(j).get(i)) + "\t";
+            }
+            System.out.println(fileString);
+            try {
+                PrintWriter writer = new PrintWriter(new FileOutputStream(new File(Settings.WORKING_DIRECTORY + "/output/" + filename + "/analysis"), true));
+                writer.println(fileString);
+                writer.close();
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
         }
     }              
 }
