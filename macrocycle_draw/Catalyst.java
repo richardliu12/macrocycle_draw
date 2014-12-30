@@ -37,6 +37,15 @@ public class Catalyst extends Molecule implements Immutable, Serializable
     }
 
     /**
+    * Returns a deep copy with new name.
+    */
+    @Override
+    public Catalyst setName(String name)
+    {
+        return new Catalyst(name, this.contents, this.connectivity, this.fragmentList);
+    }
+
+    /**
     * Default constructor that initializes the Catalyst with the first fragment 
     * @param fragment the first fragment
     */
