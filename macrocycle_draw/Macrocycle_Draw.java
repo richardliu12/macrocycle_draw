@@ -11,7 +11,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.*;
  * as a serialized Catalyst file.  Once executed, the results can be found
  * ./output.  This output should be analyzed using a separate script.
  */
-public class Macrocycle_Draw
+public abstract class Macrocycle_Draw
 {
     public static void main(String[] args)
     {

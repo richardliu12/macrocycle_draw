@@ -4,7 +4,7 @@ import com.google.common.collect.*;
 import org.apache.commons.math3.geometry.euclidean.threed.*;
 
 /**
- * Parses Macromodel geometry files.  It's expected a full block and partial blocks will be presents.
+ * Parses Macromodel geometry files.  It's expected a full block and partial blocks will be present.
  * I'm not bothering to read the atoms or any other data.
  */
 public class MAEFile extends OutputFileFormat
