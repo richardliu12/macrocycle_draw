@@ -58,7 +58,7 @@ public abstract class Analysis
                 conformations.add(c);
                 String moleculeName = filename + String.format("%05d", counter);
                 GaussianInputFile file = new GaussianInputFile(c, c.name, 
-                    "#p opt b3lyp m06-2x geom=connect scrf=(solvent=benzene) freq");
+                    "#p opt m062x geom=connect scrf=(solvent=benzene) freq");
                 file.write(Settings.WORKING_DIRECTORY + "output/" + filename + "/" + moleculeName + ".gjf");
             }
 
